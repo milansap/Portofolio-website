@@ -390,10 +390,10 @@ img {
 
 /*===================== About ==================*/
 .about__img {
-  width: 170px;
-  border-radius: 500%;
-  justify-self: center;
-  align-self: center;
+  /* width: 10px; */
+  border-radius: 10%;
+  /* justify-self: center; */
+  /* align-self: center; */
   /* border: 1px solid #fff; */
 }
 
@@ -1056,6 +1056,7 @@ img {
 
   .about__img {
     width: 300px;
+    
   }
 
   .about__description {
