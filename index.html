@@ -849,5 +849,14 @@
       crossorigin="anonymous"
     ></script>
     <script src="assets/ptj.js"></script>
+    <script>
+      const userEmailInput = document.getElementById("userEmail");
+      const mailtoLink = document.getElementById("mailtoLink");
+
+      userEmailInput.addEventListener("input", function () {
+        const userEmail = userEmailInput.value;
+        mailtoLink.href = `mailto:${userEmail}?subject=Hiring you!&body=Hiring you as a frontend developer!`;
+      });
+    </script>
   </body>
 </html>
