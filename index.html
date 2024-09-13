@@ -784,12 +784,12 @@
             <div class="contact__inputs grid">
               <div class="contact__content">
                 <label for="" class="content__label">Name</label>
-                <input type="text" class="contact__input" />
+                <input type="text" id="nameInput" class="contact__input" />
               </div>
 
               <div class="contact__content">
                 <label for="" class="content__label">Email</label>
-                <input type="Email" class="contact__input" />
+                <input type="Email" id="userEmailInput" class="contact__input" />
               </div>
             </div>
 
@@ -801,12 +801,14 @@
                 cols="0"
                 rows="7"
                 class="contact__input"
+                id="bodyInput" 
               ></textarea>
             </div>
 
             <div>
               <a
-                href=" mailto: sapkota111milan@gmail.com?subject=Hiring you! &body=hirng you as a fronend developer!"
+              id="mailtoLink"
+                href="#"
                 class="button button--flex"
               >
                 Send Message
@@ -873,5 +875,27 @@
       crossorigin="anonymous"
     ></script>
     <script src="assets/ptj.js"></script>
+    <script>
+      const nameInput = document.getElementById("nameInput");
+const userEmailInput = document.getElementById("userEmailInput");
+const subjectInput = document.getElementById("subjectInput");
+const bodyInput = document.getElementById("bodyInput");
+const mailtoLink = document.getElementById("mailtoLink");
+
+function updateMailtoLink() {
+  const userName = encodeURIComponent(nameInput.value);
+  const userEmail = userEmailInput.value;
+  const subject = encodeURIComponent(subjectInput.value);
+  const body = encodeURIComponent(`Name: ${userName}\n\n${bodyInput.value}`);
+  
+  mailtoLink.href = `mailto:${userEmail}?subject=${subject}&body=${body}`;
+}
+
+nameInput.addEventListener("input", updateMailtoLink);
+userEmailInput.addEventListener("input", updateMailtoLink);
+subjectInput.addEventListener("input", updateMailtoLink);
+bodyInput.addEventListener("input", updateMailtoLink);
+
+    </script>
   </body>
 </html>
