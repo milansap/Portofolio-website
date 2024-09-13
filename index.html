@@ -808,7 +808,7 @@
             <div>
               <a
               id="mailtoLink"
-                href="#"
+               
                 class="button button--flex"
               >
                 Send Message
@@ -876,7 +876,7 @@
     ></script>
     <script src="assets/ptj.js"></script>
     <script>
-      const nameInput = document.getElementById("nameInput");
+     const nameInput = document.getElementById("nameInput");
 const userEmailInput = document.getElementById("userEmailInput");
 const subjectInput = document.getElementById("subjectInput");
 const bodyInput = document.getElementById("bodyInput");
@@ -884,17 +884,28 @@ const mailtoLink = document.getElementById("mailtoLink");
 
 function updateMailtoLink() {
   const userName = encodeURIComponent(nameInput.value);
-  const userEmail = userEmailInput.value;
+  const userEmail = encodeURIComponent(userEmailInput.value);
   const subject = encodeURIComponent(subjectInput.value);
   const body = encodeURIComponent(`Name: ${userName}\n\n${bodyInput.value}`);
   
-  mailtoLink.href = `mailto:${userEmail}?subject=${subject}&body=${body}`;
+  if (userEmail) {
+    mailtoLink.href = `mailto:${userEmail}?subject=${subject}&body=${body}`;
+  } else {
+    mailtoLink.removeAttribute('href');  // Prevent link if no email is entered
+  }
 }
 
 nameInput.addEventListener("input", updateMailtoLink);
 userEmailInput.addEventListener("input", updateMailtoLink);
 subjectInput.addEventListener("input", updateMailtoLink);
 bodyInput.addEventListener("input", updateMailtoLink);
+
+mailtoLink.addEventListener("click", function(event) {
+  if (!mailtoLink.href.includes('mailto:')) {
+    event.preventDefault();  // Prevent the default action if mailto is not set
+    alert("Please provide a valid email address.");
+  }
+});
 
     </script>
   </body>
