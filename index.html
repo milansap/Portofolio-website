@@ -879,48 +879,37 @@
             </div>
           </div>
 
-          <form action="" class="contact__form grid">
+          <form id="contactForm" class="contact__form grid">
             <div class="contact__inputs grid">
               <div class="contact__content">
-                <label for="" class="content__label">Name</label>
-                <input id="nameInput" type="text" class="contact__input" />
+                <label for="nameInput" class="content__label">Name</label>
+                <input id="nameInput" name="user_name" type="text" class="contact__input" />
               </div>
-
+          
               <div class="contact__content">
-                <label for="" class="content__label">Email</label>
-                <input
-                  id="userEmailInput"
-                  type="Email"
-                  class="contact__input"
-                />
+                <label for="userEmailInput" class="content__label">Email</label>
+                <input id="userEmailInput" name="user_email" type="email" class="contact__input" />
               </div>
+          
               <div class="contact__content">
-                <label for="" class="content__label">Subject</label>
-                <input id="subjectInput" type="Email" class="contact__input" />
+                <label for="subjectInput" class="content__label">Subject</label>
+                <input id="subjectInput" name="subject" type="text" class="contact__input" />
               </div>
             </div>
-
+          
             <div class="contact__content">
-              <label for="" class="content__label">Message</label>
-              <textarea
-                name="message"
-                id="bodyInput"
-                cols="0"
-                rows="7"
-                class="contact__input"
-              ></textarea>
+              <label for="bodyInput" class="content__label">Message</label>
+              <textarea id="bodyInput" name="message" cols="0" rows="7" class="contact__input"></textarea>
             </div>
-
+          
             <div>
-              <a
-                href=" mailto: sapkota111milan@gmail.com?subject=Hiring you! &body=hirng you as a fronend developer!"
-                class="button button--flex"
-              >
+              <button type="submit" class="button button--flex">
                 Send Message
                 <i class="uil uil-message button__icon"></i>
-              </a>
+              </button>
             </div>
           </form>
+          
         </div>
       </section>
     </main>
@@ -1012,5 +1001,45 @@
         }
       });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+     
+  // Initialize EmailJS with your public key
+  emailjs.init('LAefwREF5jIr93pXn'); // Replace with your actual EmailJS public key
+
+  document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    
+    const button = document.querySelector('.button');
+    button.textContent = 'Sending...';
+
+   
+    const params = {
+      to_name: 'Milan Sapkota', 
+      user_name: document.querySelector('[name="user_name"]').value,
+      user_email: document.querySelector('[name="user_email"]').value,
+      message: document.querySelector('[name="message"]').value,
+    };
+
+    // Use emailjs.send for custom params
+    emailjs.send('service_roqrwic', 'template_oag43ig', params)
+      .then(() => {
+        // Success handling
+        alert('Message sent successfully!');
+        button.textContent = 'Send Message';
+        document.getElementById('contactForm').reset(); // Clear the form
+      })
+      .catch((error) => {
+        // Error handling
+        alert('Failed to send message. Please try again.');
+        console.error('EmailJS Error:', error);
+        button.textContent = 'Send Message';
+      });
+  });
+
+    </script>
+    
+    
   </body>
 </html>
