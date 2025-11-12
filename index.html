@@ -67,10 +67,11 @@
     />
   </head>
 
-  <body oncontextmenu="return false">
-    <header class="header" id="header">
+  <body>
+    <a class="skip-link" href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Skip to content</a>
+    <header class="header" id="header" role="banner">
       <nav class="nav container">
-        <a href="" class="nav__logo">MI LAN</a>
+        <a href="" class="nav__logo" aria-label="Homepage">MI LAN</a>
         <div class="nav__menu" id="nav-menu">
           <ul class="nav__list grid">
             <li class="nav__item">
@@ -116,9 +117,9 @@
         </div>
       </nav>
     </header>
-    <!-- main-->
+  <!-- main-->
 
-    <main class="main">
+  <main id="main" class="main">
       <!--========================= Home =====================-->
 
       <section class="home section" id="home">
@@ -204,14 +205,14 @@
         <div class="about__container container grid">
           <div class="about__data">
             <p class="about__description">
-                I’m a Fourth-year BSc.CSIT student with a deep passion for coding
-                and a keen interest in web development. I thrive on solving
-                complex problems and enjoy the creative challenges that come with
-                building dynamic web experiences. With a self-driven attitude, I
-                continuously seek opportunities to expand my knowledge and skills.
-                I'm eager to contribute to innovative projects in the tech field,
-                enhancing my expertise while making meaningful contributions to
-                the industry.
+              I’m a Fourth-year BSc.CSIT student with a deep passion for coding
+              and a keen interest in web development. I thrive on solving
+              complex problems and enjoy the creative challenges that come with
+              building dynamic web experiences. With a self-driven attitude, I
+              continuously seek opportunities to expand my knowledge and skills.
+              I'm eager to contribute to innovative projects in the tech field,
+              enhancing my expertise while making meaningful contributions to
+              the industry.
             </p>
 
             <div class="about__info">
@@ -242,14 +243,14 @@
             </div>
           </div>
           <img
-            src="assets/LatestResume-2.pdf"
+            src="assets/img/milan.jpg"
             alt=""
             class="about__img"
             height="100px"
+            width="400px"
           />
         </div>
       </section>
-
       <!--===================== SKILLS =====================-->
 
       <section class="skills section" id="skills">
@@ -819,23 +820,23 @@
                             class="uil uil-check-circle services__modal-icon"
                           ></i>
                           <p>
-                            got opportunities to work on different frameworks and
-                            libraries.
+                            got opportunities to work on different frameworks
+                            and libraries.
                           </p>
                         </li>
                         <li class="services__modal-service">
                           <i
                             class="uil uil-check-circle services__modal-icon"
                           ></i>
-                          <p>Also learning to initiate the project from the beginning</p>
+                          <p>
+                            Also learning to initiate the project from the
+                            beginning
+                          </p>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  
                 </div>
-
-              
               </div>
             </div>
           </div>
@@ -883,25 +884,46 @@
             <div class="contact__inputs grid">
               <div class="contact__content">
                 <label for="nameInput" class="content__label">Name</label>
-                <input id="nameInput" name="user_name" type="text" class="contact__input" />
+                <input
+                  id="nameInput"
+                  name="user_name"
+                  type="text"
+                  class="contact__input"
+                />
               </div>
-          
+
               <div class="contact__content">
                 <label for="userEmailInput" class="content__label">Email</label>
-                <input id="userEmailInput" name="user_email" type="email" class="contact__input" />
+                <input
+                  id="userEmailInput"
+                  name="user_email"
+                  type="email"
+                  class="contact__input"
+                />
               </div>
-          
+
               <div class="contact__content">
                 <label for="subjectInput" class="content__label">Subject</label>
-                <input id="subjectInput" name="subject" type="text" class="contact__input" />
+                <input
+                  id="subjectInput"
+                  name="subject"
+                  type="text"
+                  class="contact__input"
+                />
               </div>
             </div>
-          
+
             <div class="contact__content">
               <label for="bodyInput" class="content__label">Message</label>
-              <textarea id="bodyInput" name="message" cols="0" rows="7" class="contact__input"></textarea>
+              <textarea
+                id="bodyInput"
+                name="message"
+                cols="0"
+                rows="7"
+                class="contact__input"
+              ></textarea>
             </div>
-          
+
             <div>
               <button type="submit" class="button button--flex">
                 Send Message
@@ -909,7 +931,6 @@
               </button>
             </div>
           </form>
-          
         </div>
       </section>
     </main>
@@ -1003,43 +1024,40 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-     
-  // Initialize EmailJS with your public key
-  emailjs.init('LAefwREF5jIr93pXn'); // Replace with your actual EmailJS public key
+      // Initialize EmailJS with your public key
+      emailjs.init("LAefwREF5jIr93pXn"); // Replace with your actual EmailJS public key
 
-  document.getElementById('contactForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // Prevent default form submission
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent default form submission
 
-    
-    const button = document.querySelector('.button');
-    button.textContent = 'Sending...';
+          const button = document.querySelector(".button");
+          button.textContent = "Sending...";
 
-   
-    const params = {
-      to_name: 'Milan Sapkota', 
-      user_name: document.querySelector('[name="user_name"]').value,
-      user_email: document.querySelector('[name="user_email"]').value,
-      message: document.querySelector('[name="message"]').value,
-    };
+          const params = {
+            to_name: "Milan Sapkota",
+            user_name: document.querySelector('[name="user_name"]').value,
+            user_email: document.querySelector('[name="user_email"]').value,
+            message: document.querySelector('[name="message"]').value,
+          };
 
-    // Use emailjs.send for custom params
-    emailjs.send('service_roqrwic', 'template_oag43ig', params)
-      .then(() => {
-        // Success handling
-        alert('Message sent successfully!');
-        button.textContent = 'Send Message';
-        document.getElementById('contactForm').reset(); // Clear the form
-      })
-      .catch((error) => {
-        // Error handling
-        alert('Failed to send message. Please try again.');
-        console.error('EmailJS Error:', error);
-        button.textContent = 'Send Message';
-      });
-  });
-
+          // Use emailjs.send for custom params
+          emailjs
+            .send("service_roqrwic", "template_oag43ig", params)
+            .then(() => {
+              // Success handling
+              alert("Message sent successfully!");
+              button.textContent = "Send Message";
+              document.getElementById("contactForm").reset(); // Clear the form
+            })
+            .catch((error) => {
+              // Error handling
+              alert("Failed to send message. Please try again.");
+              console.error("EmailJS Error:", error);
+              button.textContent = "Send Message";
+            });
+        });
     </script>
-    
-    
   </body>
 </html>

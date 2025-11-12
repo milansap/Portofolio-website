@@ -1,13 +1,13 @@
-const navMenu = document.getElementById("nav-menu"),
-  navToggle = document.getElementById("nav-toggle");
-navClose = document.getElementById("nav-close");
-if (navToggle) {
+const navMenu = document.getElementById("nav-menu");
+const navToggle = document.getElementById("nav-toggle");
+const navClose = document.getElementById("nav-close");
+if (navToggle && navMenu) {
   navToggle.addEventListener("click", () => {
     navMenu.classList.add("show-menu");
   });
 }
 
-if (navClose) {
+if (navClose && navMenu) {
   navClose.addEventListener("click", () => {
     navMenu.classList.remove("show-menu");
   });
@@ -15,11 +15,9 @@ if (navClose) {
 
 /*==================== REMOVE MENU MOBILE ====================*/
 const navLink = document.querySelectorAll(".nav__link");
-
 function linkAction() {
-  const navMenu = document.getElementById("nav-menu");
-  // When we click on each nav__link, we remove the show-menu class
-  navMenu.classList.remove("show-menu");
+  const menu = document.getElementById("nav-menu");
+  if (menu) menu.classList.remove("show-menu");
 }
 navLink.forEach((n) => n.addEventListener("click", linkAction));
 
@@ -159,21 +157,24 @@ const getCurrentIcon = () =>
 
 // We validate if the user previously chose a topic
 if (selectedTheme) {
-  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+  // If the validation is fulfilled, apply saved theme
   document.body.classList[selectedTheme === "dark" ? "add" : "remove"](
     darkTheme,
   );
-  themeButton.classList[selectedIcon === "uil-moon" ? "add" : "remove"](
-    iconTheme,
-  );
+  if (themeButton)
+    themeButton.classList[selectedIcon === "uil-moon" ? "add" : "remove"](
+      iconTheme,
+    );
 }
 
 // Activate / deactivate the theme manually with the button
-themeButton.addEventListener("click", () => {
-  // Add or remove the dark / icon theme
-  document.body.classList.toggle(darkTheme);
-  themeButton.classList.toggle(iconTheme);
-  // We save the theme and the current icon that the user chose
-  localStorage.setItem("selected-theme", getCurrentTheme());
-  localStorage.setItem("selected-icon", getCurrentIcon());
-});
+if (themeButton) {
+  themeButton.addEventListener("click", () => {
+    // Add or remove the dark / icon theme
+    document.body.classList.toggle(darkTheme);
+    themeButton.classList.toggle(iconTheme);
+    // We save the theme and the current icon that the user chose
+    localStorage.setItem("selected-theme", getCurrentTheme());
+    localStorage.setItem("selected-icon", getCurrentIcon());
+  });
+}
