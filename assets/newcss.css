@@ -3,6 +3,10 @@
   Silver pages, a deep-blue services block and an ink contact section.
   Archivo does everything: light for the name, heavy + extra-wide for
   display headings, regular for body text.
+
+  Motion lives in assets/ptj.js (GSAP + ScrollTrigger + Lenis). Everything
+  here renders a complete, static page on its own; rules scoped to
+  `html.gsap` only apply once the animation layer has booted.
 =====================================================================*/
 
 /*==================== TOKENS ====================*/
@@ -10,17 +14,15 @@
   --ink: #080912;
   --silver: #e2e1e1;
   --blue: #2a4093;
-  --astronaut: #273879;
 
   --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --script: "Mrs Saint Delafield", cursive;
 
   --gutter: clamp(1rem, 2.2vw, 2rem);
   --section-y: clamp(5rem, 10vw, 8.5rem);
   --header-h: 4.25rem;
   --bar: 4.25rem;
 
-  --ease: cubic-bezier(0.65, 0.05, 0, 1);
+  --ease: cubic-bezier(0.625, 0.05, 0, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -67,6 +69,20 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Lenis drives scrolling once it boots. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -175,7 +191,12 @@ button {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  word-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.bracket__l,
+.bracket__r {
+  display: inline-block;
 }
 
 .bracket--blue {
@@ -187,6 +208,12 @@ button {
   display: inline-block;
   white-space: nowrap;
   font-size: 10vw;
+}
+
+/* SplitText line masks need a little room for descenders. */
+.split-line-mask {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
 }
 
 /*==================== PILLS ====================*/
@@ -269,7 +296,7 @@ button {
   color: var(--bg);
 }
 
-/*==================== LOADER ====================*/
+/*==================== INTRO LOADER ====================*/
 .loader {
   display: none;
 }
@@ -278,13 +305,10 @@ html.js .loader {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: grid;
-  place-items: center;
-  background: var(--blue);
-  clip-path: inset(0);
-  transition: clip-path 1.1s var(--ease);
+  display: block;
+  pointer-events: none;
   /* Safety net: never trap the page if the script fails. */
-  animation: loader-safety 0s 7s forwards;
+  animation: loader-safety 0s 9s forwards;
 }
 
 @keyframes loader-safety {
@@ -293,37 +317,44 @@ html.js .loader {
   }
 }
 
-html.is-ready .loader {
-  clip-path: inset(0 0 100% 0);
+/* Oversized so the round ends of the scribble never show on screen. */
+.loader__shape {
+  position: absolute;
+  top: -15%;
+  left: -15%;
+  width: 130%;
+  height: 130%;
+}
+
+/* Starts fully drawn and fat so it covers the page from the first paint. */
+.loader__shape path {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 80%;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.loader__sig-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  visibility: hidden;
 }
 
 .loader__sig {
-  width: min(86vw, 46rem);
+  width: min(84vw, 44rem);
   height: auto;
   overflow: visible;
 }
 
-.loader__sig text {
-  font-family: var(--script);
-  font-size: 150px;
-  fill: transparent;
+.loader__sig path {
+  fill: none;
   stroke: #fff;
-  stroke-width: 1.4;
-  stroke-dasharray: 900;
-  stroke-dashoffset: 900;
-  animation: sig-draw 1.9s var(--ease) forwards, sig-fill 0.6s 1.5s forwards;
-}
-
-@keyframes sig-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes sig-fill {
-  to {
-    fill: #fff;
-  }
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /*==================== HEADER ====================*/
@@ -350,30 +381,32 @@ html.is-ready .loader {
 }
 
 .nav {
+  position: relative;
   height: var(--header-h);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1rem;
 }
 
+/* The logo is also the giant hero name — JS animates its font-size and y. */
 .nav__logo {
+  position: absolute;
+  left: var(--gutter);
+  top: calc(var(--header-h) / 2);
+  margin-top: -0.5em;
+  z-index: 1;
   font-size: 1.0625rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   white-space: nowrap;
-  opacity: 0;
-  transform: translateY(-0.4rem);
-  transition: opacity 0.4s, transform 0.5s var(--ease-out);
-  pointer-events: none;
+  will-change: transform;
 }
 
-.header.show-logo .nav__logo,
-.menu-open .nav__logo {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
+.nav__logo.is-top {
+  pointer-events: none;
 }
 
 .nav__br {
@@ -381,6 +414,8 @@ html.is-ready .loader {
 }
 
 .nav__actions {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -534,11 +569,15 @@ html.is-ready .loader {
   position: relative;
   z-index: 2;
   padding-top: calc(var(--header-h) - 0.5rem);
-  overflow: hidden;
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.01em;
   text-transform: uppercase;
+}
+
+/* With JS, the header logo sits here instead — keep the space, hide the copy. */
+html.logo-scroll .hero__name .fit {
+  visibility: hidden;
 }
 
 .hero__br {
@@ -569,7 +608,7 @@ html.is-ready .loader {
 .hero__foot {
   position: absolute;
   inset: auto 0 1.25rem;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -617,34 +656,23 @@ html.is-ready .loader {
   }
 }
 
-/* Hero intro, triggered once the loader lifts. */
-html.js .hero__name .fit {
-  transform: translateY(105%);
-  transition: transform 1.3s var(--ease-out);
+/* Cursor image trail: the source images stay hidden, clones fly. */
+.trail {
+  display: none;
 }
 
-html.js .hero__media {
-  opacity: 0;
-  transform: translateX(-50%) translateY(4%) scale(1.04);
-  transition: opacity 1.2s 0.2s, transform 1.6s 0.2s var(--ease-out);
-}
-
-html.js .hero__foot {
-  opacity: 0;
-  transition: opacity 1s 0.6s;
-}
-
-html.is-ready .hero__name .fit {
-  transform: none;
-}
-
-html.is-ready .hero__media {
-  opacity: 1;
-  transform: translateX(-50%);
-}
-
-html.is-ready .hero__foot {
-  opacity: 1;
+.trail-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: clamp(9rem, 14vw, 14rem);
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top left;
+  border-radius: 0.4rem;
+  box-shadow: 0 1.5rem 2.5rem -1.25rem rgba(8, 9, 18, 0.45);
+  pointer-events: none;
 }
 
 /*==================== ABOUT ====================*/
@@ -692,13 +720,13 @@ html.is-ready .hero__foot {
   object-fit: cover;
   object-position: center 30%;
   filter: grayscale(1) contrast(1.05);
-  transition: filter 0.8s var(--ease-out), transform 1.2s var(--ease-out);
+  scale: 1.12;
+  transition: filter 0.8s var(--ease-out);
 }
 
 /* Colour comes back on hover. */
 .about__media:hover img {
   filter: none;
-  transform: scale(1.03);
 }
 
 .about__media .tag-pill {
@@ -747,17 +775,18 @@ html.is-ready .hero__foot {
   color: var(--muted);
 }
 
-/*==================== WIPE INTO SERVICES ====================*/
+/*==================== DRAW TRANSITION INTO SERVICES ====================*/
 .wipe {
-  --p: 0;
-  height: 230vh;
-}
-
-.wipe__sticky {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100vh;
   height: 100svh;
+  overflow: hidden;
+}
+
+.wipe__inner {
+  position: relative;
+  z-index: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -765,11 +794,6 @@ html.is-ready .hero__foot {
   gap: 0.75rem;
   padding-inline: var(--gutter);
   text-align: center;
-  overflow: hidden;
-}
-
-.wipe__statement {
-  transform: scale(calc(1 - var(--p) * 0.12));
 }
 
 .wipe__small,
@@ -785,23 +809,40 @@ html.is-ready .hero__foot {
   font-size: clamp(2.6rem, 8.2vw, 8rem);
 }
 
-/* Blue shape that sweeps up from the bottom-left as the section scrolls. */
-.wipe__blob {
+.wipe__draw {
+  position: absolute;
+  top: -15%;
+  left: -15%;
+  z-index: 1;
+  width: 130%;
+  height: 130%;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+html.gsap .wipe__draw {
+  visibility: visible;
+}
+
+/* Closes any corner the stroke misses in the last stretch of the draw. */
+.wipe__fill {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: var(--blue);
-  clip-path: ellipse(
-    calc(var(--p) * 190%) calc(var(--p) * 150%) at 0% 100%
-  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wipe__draw path {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /*==================== SERVICES ====================*/
-.svc {
-  position: sticky;
-  top: calc(var(--header-h) + var(--i) * var(--bar));
-  background: var(--blue);
-}
-
 .svc__bar {
   height: var(--bar);
   display: flex;
@@ -823,11 +864,10 @@ html.is-ready .hero__foot {
   text-align: right;
 }
 
-.svc__body {
-  height: min(68svh, 38rem);
+/* Static layout (mobile, tablet, or before the animation layer boots). */
+.svc__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr);
-  grid-template-rows: minmax(0, 1fr) auto;
   gap: 1.5rem 2rem;
   padding-block: 1.5rem;
   align-items: end;
@@ -841,35 +881,83 @@ html.is-ready .hero__foot {
 }
 
 .svc__media {
-  height: 100%;
+  position: relative;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--silver);
 }
 
-.svc__media img {
+.svc__media img,
+.svc__media .cover {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top left;
 }
 
-/* Project name tucked under each service image. */
 .svc__project {
-  grid-column: 2;
-  margin-top: -0.9rem;
-  font-size: 0.6875rem;
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 1;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--silver);
+  font-size: 0.625rem;
   text-transform: uppercase;
-  text-align: right;
-  color: var(--muted);
+  white-space: nowrap;
+  transition: background-color 0.3s;
 }
 
-.svc__project a {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+.svc__project:hover {
+  background: var(--blue);
 }
 
-.svc__project a:hover {
-  color: var(--fg);
+/* Pinned accordion (desktop, set by JS): each visual is sized to the viewport
+   and the image wrap slides between 29% and the right edge. */
+html.svc-pin .services {
+  height: 100vh;
+  overflow: hidden;
+}
+
+html.svc-pin .svc__visual {
+  position: relative;
+  overflow: hidden;
+}
+
+html.svc-pin .svc__inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+  max-width: none;
+}
+
+html.svc-pin .svc__text {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 1.5rem;
+  width: min(25%, 22rem);
+}
+
+html.svc-pin .svc__media {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 29%;
+  width: 71%;
+  aspect-ratio: auto;
+}
+
+/* Keep the picture a fixed size while its wrapper narrows around it. */
+html.svc-pin .svc__media img,
+html.svc-pin .svc__media .cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 71vw;
+  height: 100%;
 }
 
 /*==================== SHARED CENTRED HEAD ====================*/
@@ -939,17 +1027,9 @@ html.is-ready .hero__foot {
 }
 
 /*==================== PROJECTS (ORBIT) ====================*/
-/* Off-screen cards must not widen the page (mobile browsers zoom out). */
+/* Cards on the far side of the ring must not widen the page. */
 .projects {
   overflow: hidden;
-}
-
-.orbit {
-  position: relative;
-}
-
-.orbit:focus-visible {
-  outline-offset: 1rem;
 }
 
 .orbit__count {
@@ -959,38 +1039,79 @@ html.is-ready .hero__foot {
   font-variant-numeric: tabular-nums;
 }
 
+.orbit__count-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+#orbit-current {
+  display: inline-block;
+}
+
 .orbit__stage {
   position: relative;
-  height: clamp(16rem, 32vw, 29rem);
+  height: clamp(17rem, 34vw, 31rem);
   margin-top: 1rem;
 }
 
-.orbit__card {
-  --tx: 0%;
-  --ty: 0%;
-  --sc: 1;
-  --bl: 0px;
-  --op: 1;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: clamp(14rem, 36vw, 32rem);
-  aspect-ratio: 16 / 9.4;
-  overflow: hidden;
-  border-radius: 0.35rem;
-  background: var(--ink);
-  box-shadow: 0 2rem 3rem -1.75rem rgba(8, 9, 18, 0.5);
-  transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(var(--sc));
-  filter: blur(var(--bl));
-  opacity: var(--op);
-  transition: transform 1s var(--ease), filter 1s var(--ease), opacity 1s var(--ease);
+/* Static fallback: a horizontal strip of cards. */
+.orbit__ring {
+  display: flex;
+  gap: 1rem;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
 }
 
-.orbit__card img {
+.orbit__tile {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+}
+
+.orbit__card {
+  display: block;
+  width: clamp(12rem, 27vw, 25rem);
+  aspect-ratio: 16 / 10;
+}
+
+.orbit__mask {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.65em;
+  background: var(--ink);
+  box-shadow: 0 2rem 3rem -1.75rem rgba(8, 9, 18, 0.5);
+}
+
+.orbit__mask img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top left;
+}
+
+/* Animated ring: every tile sits on the centre point and JS moves it. */
+html.gsap .orbit__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
+html.gsap .orbit__tile {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform, filter;
+}
+
+html.gsap .orbit__card {
+  pointer-events: none;
 }
 
 .cover {
@@ -1011,17 +1132,13 @@ html.is-ready .hero__foot {
   background-color: var(--ink);
 }
 
-.cover--astro {
-  background-color: #1b2a63;
-}
-
 .cover .uil {
   align-self: flex-end;
   font-size: clamp(2.5rem, 6vw, 5rem);
   line-height: 1;
 }
 
-.cover span {
+.cover > span {
   font-size: clamp(1.25rem, 2.8vw, 2.4rem);
   font-weight: 800;
   font-stretch: 125%;
@@ -1046,17 +1163,10 @@ html.is-ready .hero__foot {
 
 .orbit__item {
   grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(0.75rem);
-  transition: opacity 0.4s, transform 0.6s var(--ease-out), visibility 0s 0.4s;
 }
 
-.orbit__item.is-active {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition: opacity 0.5s 0.2s, transform 0.8s 0.2s var(--ease-out);
+.orbit__item:not(.is-active) {
+  visibility: hidden;
 }
 
 .orbit__title {
@@ -1173,7 +1283,16 @@ html.is-ready .hero__foot {
 }
 
 /*==================== CONTACT ====================*/
-.contact__hero {
+.contact__track {
+  position: relative;
+}
+
+/* A long track so the flying words have scroll distance to travel. */
+html.gsap .contact__track {
+  height: 320vh;
+}
+
+.contact__sticky {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
@@ -1183,24 +1302,32 @@ html.is-ready .hero__foot {
   overflow: hidden;
 }
 
-.contact__words li {
+html.gsap .contact__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+}
+
+.contact__words {
   position: absolute;
-  left: var(--x);
-  top: var(--y);
-  font-size: calc(var(--s) * 1rem);
+  inset: 0;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.contact__word {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: clamp(1.25rem, 2.6vw, 2.5rem);
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
   text-transform: uppercase;
-  color: rgba(226, 225, 225, 0.22);
-  animation: drift 11s ease-in-out infinite alternate;
-  animation-delay: var(--d);
-}
-
-@keyframes drift {
-  to {
-    transform: translate(1.75rem, -1.25rem);
-  }
+  color: var(--silver);
+  will-change: transform, opacity, filter;
 }
 
 .contact__center {
@@ -1306,8 +1433,12 @@ html.is-ready .hero__foot {
 
 /*==================== FOOTER ====================*/
 .footer {
-  padding-top: clamp(3.5rem, 7vw, 5rem);
+  overflow: hidden;
   border-top: 1px solid var(--line);
+}
+
+.footer__inner {
+  padding-top: clamp(3.5rem, 7vw, 5rem);
 }
 
 .footer__cols {
@@ -1359,18 +1490,6 @@ html.is-ready .hero__foot {
   color: var(--muted);
 }
 
-/*==================== REVEAL ====================*/
-html.js .reveal {
-  opacity: 0;
-  transform: translateY(1.75rem);
-  transition: opacity 0.9s var(--ease-out), transform 1.1s var(--ease-out);
-}
-
-html.js .reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
 /*==================== RESPONSIVE ====================*/
 @media (max-width: 1100px) {
   .job,
@@ -1399,23 +1518,12 @@ html.js .reveal.is-visible {
   .hero__foot {
     position: relative;
     inset: auto;
-    z-index: 2;
     margin-top: 0.75rem;
     align-items: center;
   }
 
   .hero__media {
     height: 64%;
-  }
-
-  .contact__words li {
-    font-size: calc(var(--s) * 0.72rem);
-    color: rgba(226, 225, 225, 0.16);
-  }
-
-  /* These three sit level with the buttons on short, narrow screens. */
-  .contact__words li:nth-child(n + 6):nth-child(-n + 8) {
-    display: none;
   }
 
   .about__row {
@@ -1426,32 +1534,13 @@ html.js .reveal.is-visible {
     margin-right: 0;
   }
 
-  .wipe {
-    height: 190vh;
-  }
-
-  .svc__body {
-    height: auto;
+  .svc__inner {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: none;
-  }
-
-  .svc__media {
-    height: auto;
-    aspect-ratio: 16 / 10;
-  }
-
-  .svc__project {
-    grid-column: 1;
   }
 
   .job,
   .edu {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .orbit__card {
-    width: 68vw;
   }
 
   .orbit__info {
@@ -1465,6 +1554,10 @@ html.js .reveal.is-visible {
 
   .footer__cols {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bracket {
+    white-space: normal;
   }
 }
 

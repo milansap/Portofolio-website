@@ -9,13 +9,15 @@ No build step: plain HTML, CSS and JavaScript, deployed as-is.
 | --- | --- |
 | `index.html` | All page content and section markup |
 | `assets/newcss.css` | Design tokens + every component style |
-| `assets/ptj.js` | Intro loader, fit-to-width text, header theme, menu, services wipe, reveals, counters, projects carousel |
+| `assets/ptj.js` | All motion (GSAP + Lenis) plus menu, header theme, fit-to-width text and the static fallback |
 | `assets/contact.js` | Contact form submission via EmailJS |
 | `assets/img/` | Portraits (`hero-portrait.jpg` is the web-sized hero) and project screenshots |
 | `assets/Milan_Sapkota_Resume.pdf` | File served by the "Resume" / "Download CV" buttons |
 
-External dependencies are loaded from CDNs: Google Fonts (Archivo variable, Mrs Saint Delafield for the intro signature),
-Unicons v4.0.8 for icons, and the EmailJS browser SDK.
+External dependencies are loaded from CDNs: Google Fonts (Archivo variable),
+Unicons v4.0.8 for icons, GSAP 3.15 (core, ScrollTrigger, SplitText,
+DrawSVGPlugin, CustomEase — all free), Lenis 1.3 for smooth scrolling, and the
+EmailJS browser SDK.
 
 ## Theming
 
@@ -29,22 +31,46 @@ Type is all Archivo: `.display` is heavy + extra-wide uppercase (via the
 `wdth` axis), the name is light weight, and `.fit` elements are sized by JS to
 span their container exactly.
 
+## Motion
+
+Everything is scripted in `assets/ptj.js`; the CSS alone renders a complete
+static page, and rules scoped to `html.gsap` only apply once animation boots.
+
+| Effect | Where | Hook |
+| --- | --- | --- |
+| Signature intro + ribbon reveal (once per session) | `#loader` | `.loader__sig path`, `.loader__shape path`, `[data-reveal]` |
+| Hero name shrinks into the header logo | `#brand` / `#hero-name` | scrubbed over the hero |
+| Line / 3D-char / scattered-char text reveals | any element | `data-split-lines`, `data-split-roll`, `data-split-random` |
+| Brackets slide in | headings | `data-bracket` with `.bracket__l` / `.bracket__r` |
+| Parallax | images | `data-parallax="<percent>"` |
+| Pinned stroke draw into blue | `#wipe` | pinned for 200% of the viewport |
+| Pinned services accordion (≥ 992 px) | `#services` | adds `html.svc-pin` |
+| Orbit carousel | `#orbit` | `.orbit__tile` / `.orbit__item`, same order |
+| Flying "contact" words | `#contact-track` | words generated in JS |
+| Footer slides out from under the page (≥ 768 px) | `#footer-inner` | |
+| Cursor image trail (mouse only) | `[data-trail]` | `.trail img[data-src]` |
+
+If GSAP fails to load or the visitor prefers reduced motion, none of this
+runs: the loader is skipped, services stack statically and the orbit becomes
+a scrollable strip with working prev/next buttons.
+
+The intro signature is real SVG paths generated from the Mrs Saint Delafield
+font, so it can be drawn stroke by stroke; regenerate them if the name changes.
+
 ## Editing content
 
 Sections live in `index.html` in page order: hero, about, services intro
 (`#wipe`), services, experience, projects, skills + education, contact.
 
-- **Services** are `.svc` items; each needs an increasing `--i` inline so the
-  sticky bars stack under one another.
+- **Services** are `.svc` items: a `.svc__bar` row plus a `.svc__visual`
+  holding the text and `.svc__media`.
 - **Experience** entries are `.job` rows.
-- **Projects**: add an `.orbit__card` (image or `.cover`) in `.orbit__stage`
-  and an `.orbit__item` in `.orbit__details`, in the same order. The counter
-  and carousel pick them up automatically.
+- **Projects**: add an `.orbit__tile` in `#orbit-ring` and an `.orbit__item`
+  in `.orbit__details`, in the same order. The counter and carousel pick them
+  up automatically.
 - **Skills** are `.skill-col` lists.
 
-Any element given `class="reveal"` fades in when scrolled into view. The
-intro loader plays once per browser session and is skipped when the visitor
-prefers reduced motion.
+Any element given `class="reveal"` rises in when scrolled into view.
 
 ## Running locally
 

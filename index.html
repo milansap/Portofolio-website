@@ -47,12 +47,12 @@
     <link rel="icon" href="./assets/img/letter-m.png" type="image/png" />
     <link rel="apple-touch-icon" href="./assets/img/letter-m.png" />
 
-    <!-- Fonts: Archivo (variable width + weight) and a script face for the intro signature -->
+    <!-- Fonts: Archivo (variable width + weight) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Mrs+Saint+Delafield&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap"
     />
 
     <!-- Icons -->
@@ -64,7 +64,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="assets/newcss.css" />
 
-    <!-- Mark JS early so the intro and reveals can start hidden without a flash. -->
+    <!-- Mark JS early so the intro can cover the page before first paint. -->
     <script>
       document.documentElement.classList.add("js");
     </script>
@@ -73,18 +73,37 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!--==================== INTRO LOADER ====================-->
+    <!--==================== INTRO / TRANSITION ====================-->
+    <!-- A fat marker scribble covers the page while the signature draws, then
+         unwinds along its own path to reveal the site. -->
     <div class="loader" id="loader" aria-hidden="true">
-      <svg class="loader__sig" viewBox="0 0 700 260">
-        <text x="350" y="170" text-anchor="middle">Milan Sapkota</text>
+      <svg class="loader__shape" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <path d="M-50 99C16 74 27 34 110 39C193 45 159 -2 149 112C138 227 -6 310 85 314C177 318 364 4 368 122C373 239 -64 604 96 596C256 587 739 21 753 101C766 182 55 785 129 789C203 794 871 72 931 112C990 153 290 739 273 887C256 1034 756 465 889 466C1023 467 600 783 594 888C588 994 737 726 874 719C1012 711 929 757 924 871C919 984 805 890 862 990C920 1090 979 1060 1062 1110" />
       </svg>
+      <div class="loader__sig-wrap">
+        <svg class="loader__sig" viewBox="-10 45 967 250" aria-hidden="true">
+          <path d="M10.8 203.2L10.8 203.2Q6.8 203.2 6.8 199.2L6.8 199.2Q6.8 188.4 31.1 158.2Q55.4 128 81.8 106.2L81.8 106.2Q91.4 86 91.4 74.8L91.4 74.8Q91.4 61.4 78 61.4L78 61.4Q65.4 61.4 48.3 74Q31.2 86.6 19.4 102.1Q7.6 117.6 7.6 126.4L7.6 126.4Q7.6 132.8 15 132.8L15 132.8Q25.6 132.8 38.1 122Q50.6 111.2 56.8 101L56.8 101Q59 97.4 60.4 97.4Q61.8 97.4 61.8 98.8Q61.8 100.2 61 101.2L61 101.2Q54.2 111.4 39.4 124.6Q24.6 137.8 12.4 137.8Q0.2 137.8 0.2 128.8L0.2 128.8Q0.2 121 8.6 108.6Q17 96.2 29.1 84.7Q41.2 73.2 56.3 64.9Q71.4 56.6 83.2 56.6L83.2 56.6Q98.6 56.6 98.6 71.8L98.6 71.8Q98.6 81.8 91.4 98.8L91.4 98.8Q111.2 84.2 123.2 84.2L123.2 84.2Q130.4 84.2 130.4 91.8Q130.4 99.4 117 121.3Q103.6 143.2 90.2 160.8L90.2 160.8L76.8 178.6Q76.8 179 77 179L77 179Q84.6 173.8 103.7 156.2Q122.8 138.6 138.9 125.8Q155 113 162.8 113L162.8 113Q167.4 113 167.4 117.6Q167.4 122.2 155.4 138.2Q143.4 154.2 131.4 171Q119.4 187.8 119.4 194.2Q119.4 200.6 124.8 200.6L124.8 200.6Q131 200.6 141 194.3Q151 188 155 184.2Q159 180.4 160 180.4Q161 180.4 161 181.2L161 181.2Q161 183.6 154.3 189.4Q147.6 195.2 137.5 200.4Q127.4 205.6 120.2 205.6L120.2 205.6Q110.6 205.6 110.6 197.7Q110.6 189.8 117.3 178.4Q124 167 132 157.2L132 157.2Q154.8 130 157.4 121.2L157.4 121.2Q157.4 119 155.4 119L155.4 119Q150.6 119 125.8 140.6Q101 162.2 89.4 173.4Q77.8 184.6 73.8 188.6Q69.8 192.6 67.6 195Q65.4 197.4 63.2 199.4L63.2 199.4Q59 203.2 57.6 203.2L57.6 203.2Q57.4 203.2 57.2 203L57.2 203Q55.4 202.2 55.4 200.2L55.4 200.2Q55.4 195.2 68.2 179.2L68.2 179.2Q90.8 151.2 106.7 126Q122.6 100.8 122.6 92.4L122.6 92.4Q122.6 89.2 118.6 89.2L118.6 89.2Q108.8 89.2 87.8 106.8L87.8 106.8Q72.6 138 46.2 170.6Q19.8 203.2 10.8 203.2ZM15.2 198L15.2 198Q20.4 198 41.4 170.7Q62.4 143.4 76.8 116.4L76.8 116.4Q54 137.4 33.5 162.9Q13 188.4 13 195.8L13 195.8Q13 198 15.2 198Z" />
+          <path d="M197.7 139.6Q199.6 139.6 200.7 140.8Q201.8 142 201.8 144.2Q201.8 146.4 198.8 149.8Q195.8 153.2 193.6 153.2Q191.4 153.2 190.4 151.9Q189.4 150.6 189.4 148.9Q189.4 147.2 192.6 143.4Q195.8 139.6 197.7 139.6ZM209.8 170.2L214.2 166.6Q215.8 165.6 216.7 165.6Q217.6 165.6 217.6 166.8L217.6 166.8L217.6 167.4Q218.4 167.4 206.9 176.2Q195.4 185 182.3 193.8Q169.2 202.6 165.8 202.6L165.8 202.6Q160 202.6 160 197.8L160 197.8Q160 192 170 175.9Q180 159.8 184.6 159.8L184.6 159.8Q188 159.8 188 162.4Q188 165 178.8 176.6Q169.6 188.2 169.6 193.2L169.6 193.2Q169.6 196 171.7 196Q173.8 196 182.2 190.4L182.2 190.4Q197.2 180.4 209.8 170.2L209.8 170.2Z" />
+          <path d="M257 171L262 166.8Q263.4 165.8 264.6 165.8Q265.8 165.8 265.8 167.2L265.8 167.2L265.8 167.6Q245 184.8 234.2 191.6L234.2 191.6Q220.2 202.2 210.6 202.2L210.6 202.2Q202.2 202.2 202.2 192.2L202.2 192.2Q202.2 178.8 219.5 152.5Q236.8 126.2 258.4 105.2Q280 84.2 291 84.2L291 84.2Q296 84.2 296 88.6L296 88.6Q296 99.6 269.7 124.9Q243.4 150.2 218 168L218 168Q210.6 182.2 210.6 189.6Q210.6 197 215.8 197Q221 197 229.4 191L229.4 191Q243.6 182.6 257 171L257 171ZM286 90.6L286 90.6Q277.6 90.6 256.2 114.8Q234.8 139 220.8 163.2L220.8 163.2Q243.8 146.8 265.8 123.1Q287.8 99.4 287.8 92.4L287.8 92.4Q287.8 90.6 286 90.6Z" />
+          <path d="M282.8 176L282.8 176Q281.6 176 281.6 175.1Q281.6 174.2 283 173L283 173Q289.6 167.6 289.6 163.2L289.6 163.2Q289.6 160.4 284.6 160L284.6 160Q275.6 160.2 263.1 173Q250.6 185.8 250.6 192.2L250.6 192.2Q250.6 194.4 253.1 194.4Q255.6 194.4 259.8 191L259.8 191Q263.6 188.6 274 179L274 179Q276.4 176.6 278.6 176.6L278.6 176.6Q281.4 176.6 281.4 179.2L281.4 179.2Q281.4 180.2 280.8 180.8Q280.2 181.4 278.6 183.3Q277 185.2 275.8 186.8L275.8 186.8Q272.2 192 272.2 193.6L272.2 193.6Q272.2 197.6 275.4 197.6L275.4 197.6Q279.6 197.6 291.2 189.9Q302.8 182.2 312.4 174.4L312.4 174.4L322 166.8Q323.4 165.8 324.6 165.8Q325.8 165.8 325.8 167.2L325.8 167.2L325.8 167.6Q310.4 180.6 293.3 192Q276.2 203.4 270.8 203.4L270.8 203.4Q264.4 203.4 264.4 196.6L264.4 196.6Q264.4 195 265 193.6Q265.6 192.2 265.6 191.6Q265.6 191 265.2 190.8L265.2 190.8Q264.6 190.8 257.5 196.2Q250.4 201.6 245.1 201.6Q239.8 201.6 239.8 196Q239.8 190.4 247.3 180.9Q254.8 171.4 267.4 163.6Q280 155.8 292 155.8L292 155.8Q294.8 155.8 296.7 157.2Q298.6 158.6 298.6 161.5Q298.6 164.4 292.8 170.2Q287 176 282.8 176Z" />
+          <path d="M403.2 166.8L403.2 167.4Q361 202.6 351 202.6L351 202.6Q345.2 202.6 345.2 197.8Q345.2 193 349.5 186.4Q353.8 179.8 358.1 174.7Q362.4 169.6 362.4 168.6Q362.4 167.6 361.8 167.6L361.8 167.6Q343.2 180 339.7 182.8Q336.2 185.6 328.3 192Q320.4 198.4 318 200Q315.6 201.6 312.8 201.6L312.8 201.6Q310 201.6 310 199.2L310 199.2Q310 196.4 321.2 181.6L321.2 181.6Q332 166.8 332 165L332 165Q332 164.6 331.3 164.6Q330.6 164.6 314 176.8L314 176.8L313.2 173.8Q327.4 162.4 332.4 159.2Q337.4 156 340.5 156Q343.6 156 343.6 159L343.6 159Q343.6 161 332.3 175.3Q321 189.6 321 190.7Q321 191.8 321.7 191.8Q322.4 191.8 344.5 175.7Q366.6 159.6 371.4 159.6L371.4 159.6Q372.8 159.6 374.1 160.7Q375.4 161.8 375.4 162.8L375.4 162.8Q375.4 165.2 364.8 178.7Q354.2 192.2 354.2 194Q354.2 195.8 356.7 195.8Q359.2 195.8 367.4 190.4L367.4 190.4Q382.4 180.6 395 170.2L395 170.2L399.4 166.6Q400.8 165.6 402 165.6Q403.2 165.6 403.2 166.8L403.2 166.8Z" />
+          <path d="M481.8 180.2L481.8 180.2Q477 173.8 469.4 162.4L469.4 162.4Q416.8 157.2 416.8 140.4L416.8 140.4Q416.8 136.6 420.7 134.2Q424.6 131.8 432.6 131.8L432.6 131.8Q452.6 131.8 472.4 157.2L472.4 157.2Q492.4 159.2 517.8 159.2L517.8 159.2L520 159.2Q545.6 143.8 567.6 128.2L567.6 128.2Q576.6 111.8 583.2 101.1Q589.8 90.4 599.2 78.8L599.2 78.8Q617.8 55.2 638.4 55.2L638.4 55.2Q643.8 55.2 643.8 60L643.8 60Q643.8 71.6 624.6 90.4Q605.4 109.2 573.6 130.8L573.6 130.8Q564 149.2 559.2 157.6L559.2 157.6Q587.2 155.4 599.6 150.8L599.6 150.8L600.2 150.8Q601 150.8 601 151.9Q601 153 599.6 155L599.6 155Q584.6 159.6 556.4 162.2L556.4 162.2Q545.6 180.8 535.5 191.1Q525.4 201.4 515.2 201.4L515.2 201.4Q498.8 201.4 484.2 183.2L484.2 183.2Q455.6 197.6 433.6 205.2L433.6 205.2Q430.6 206.2 426.7 206.2Q422.8 206.2 422.8 203.2L422.8 203.2Q422.8 201.6 424.4 200.3Q426 199 428.6 199L428.6 199Q444.6 199 481.8 180.2ZM520 164.2L520 164.2Q504.8 172.8 490 180.4L490 180.4Q503.4 197 514.4 197L514.4 197Q522.6 197 530.7 188.2Q538.8 179.4 548.6 162.8L548.6 162.8Q536.4 163.8 520 164.2ZM632.8 60L632.8 60Q619 60 605 78.4L605 78.4Q593.4 94 579.6 119.6L579.6 119.6Q604.8 101 620 85.7Q635.2 70.4 635.2 62L635.2 62Q635.2 60 632.8 60ZM426.4 139.6L426.4 139.6Q426.4 151 465 156.2L465 156.2Q449.4 135.4 433.6 135.4L433.6 135.4Q426.4 135.4 426.4 139.6ZM487.6 177.4L487.6 177.4Q500 170.8 511.4 164.2L511.4 164.2L510.6 164.2Q493.2 164.2 477 163L477 163Q484.6 173.6 487.6 177.4ZM562.2 138.4L562.2 138.4Q551.4 145.6 528.6 159.2L528.6 159.2Q544 158.8 551.2 158.2L551.2 158.2Q555 151.6 562.2 138.4Z" />
+          <path d="M618 176L618 176Q616.8 176 616.8 175.1Q616.8 174.2 618.2 173L618.2 173Q624.8 167.6 624.8 163.2L624.8 163.2Q624.8 160.4 619.8 160L619.8 160Q610.8 160.2 598.3 173Q585.8 185.8 585.8 192.2L585.8 192.2Q585.8 194.4 588.3 194.4Q590.8 194.4 595 191L595 191Q598.8 188.6 609.2 179L609.2 179Q611.6 176.6 613.8 176.6L613.8 176.6Q616.6 176.6 616.6 179.2L616.6 179.2Q616.6 180.2 616 180.8Q615.4 181.4 613.8 183.3Q612.2 185.2 611 186.8L611 186.8Q607.4 192 607.4 193.6L607.4 193.6Q607.4 197.6 610.6 197.6L610.6 197.6Q614.8 197.6 626.4 189.9Q638 182.2 647.6 174.4L647.6 174.4L657.2 166.8Q658.6 165.8 659.8 165.8Q661 165.8 661 167.2L661 167.2L661 167.6Q645.6 180.6 628.5 192Q611.4 203.4 606 203.4L606 203.4Q599.6 203.4 599.6 196.6L599.6 196.6Q599.6 195 600.2 193.6Q600.8 192.2 600.8 191.6Q600.8 191 600.4 190.8L600.4 190.8Q599.8 190.8 592.7 196.2Q585.6 201.6 580.3 201.6Q575 201.6 575 196Q575 190.4 582.5 180.9Q590 171.4 602.6 163.6Q615.2 155.8 627.2 155.8L627.2 155.8Q630 155.8 631.9 157.2Q633.8 158.6 633.8 161.5Q633.8 164.4 628 170.2Q622.2 176 618 176Z" />
+          <path d="M728.6 166.8L728.6 167.4Q686.4 202.6 676.4 202.6L676.4 202.6Q670.6 202.6 670.6 197.9Q670.6 193.2 681.6 180.3Q692.6 167.4 692.6 163.8L692.6 163.8Q692.2 163.4 691.8 163.4L691.8 163.4Q686.2 163.4 673.8 172L673.8 172Q593.4 284.6 582.4 284.6L582.4 284.6Q580.2 284.6 578.7 283.1Q577.2 281.6 577.2 278.6L577.2 278.6Q577.2 264.8 604.4 232.4Q631.6 200 660.2 177.8L660.2 177.8L677.8 152.2L677.8 152Q677.8 151.4 677 151.4L677 151.4Q673 158.4 655.4 172.4L655.4 172.4L649.6 176.8L648.8 173.8Q664 161.4 677 148.2Q690 135 695.4 128L695.4 128L700.8 121Q703.6 117.2 707 117.2Q710.4 117.2 710.4 119.2L710.4 119.2Q710.4 120 709.9 120.6Q709.4 121.2 705.3 127.1Q701.2 133 693.2 144.3Q685.2 155.6 678.2 165.6L678.2 165.6Q689.8 159 695.7 159Q701.6 159 701.6 161.4L701.6 161.4Q701.6 169.4 685.6 186L685.6 186Q680.2 191.6 680.2 193.3Q680.2 195 683.1 195Q686 195 693.4 190L693.4 190Q708 180.2 720.4 170.2L720.4 170.2L724.8 166.6Q726.2 165.6 727.4 165.6Q728.6 165.6 728.6 166.8L728.6 166.8ZM585 278L585 278Q591.2 278 653.6 187.6L653.6 187.6Q627.2 210 605.5 236.5Q583.8 263 583.8 276.8L583.8 276.8Q583.8 278 585 278Z" />
+          <path d="M769.2 143.8L769.2 143.8Q769.2 142 766.7 142Q764.2 142 756.8 147.3Q749.4 152.6 743.4 158L743.4 158L737.6 163.2Q737.6 163.6 738.8 163.6L738.8 163.6Q740.8 163.6 741.4 166.7Q742 169.8 743.6 169.8L743.6 169.8Q748.8 169.8 759 159.2Q769.2 148.6 769.2 143.8ZM783.2 170.8L788.2 166.8Q789.6 165.8 790.8 165.8Q792 165.8 792 167.2L792 167.2L792 167.6Q776.2 181.6 760.4 191.6L760.4 191.6Q748.6 200.4 741.3 200.4Q734 200.4 731.1 195Q728.2 189.6 728.2 183.7Q728.2 177.8 729.4 175.6Q730.6 173.4 730.6 172.9Q730.6 172.4 729.4 172.4L729.4 172.4Q727.6 172.4 717 186.2Q706.4 200 705.2 200Q704 200 702.9 199.3Q701.8 198.6 701.8 197.4Q701.8 196.2 704.7 191.6Q707.6 187 723.6 164.6Q739.6 142.2 740.2 141.1Q740.8 140 740.8 139.6Q740.8 139.2 740.1 139.2Q739.4 139.2 739 139.5Q738.6 139.8 733 143.6L733 143.6Q720.4 152.2 715.6 152.2Q710.8 152.2 710.8 148.4L710.8 148.4Q710.8 145.2 712.9 142.8Q715 140.4 717.6 140.4L717.6 140.4Q718.8 140.4 719.6 143.1Q720.4 145.8 722.2 145.8Q724 145.8 726.6 144.4Q729.2 143 731.9 141Q734.6 139 738.1 136.1Q741.6 133.2 743.8 131.2L743.8 131.2Q750.4 125.2 751.8 123.8L751.8 123.8Q755.6 117.4 780.6 87.2L780.6 87.2Q783.6 83.4 786.5 83.4Q789.4 83.4 789.4 84.8Q789.4 86.2 788.4 87.5Q787.4 88.8 773.4 106.9Q759.4 125 745.2 143.9Q731 162.8 731 164Q731 165.2 732 165.2L732 165.2Q735 162 739.7 157.3Q744.4 152.6 755.8 144.7Q767.2 136.8 773.9 136.8Q780.6 136.8 780.6 140.4L780.6 140.4Q780.6 147 765.2 160Q749.8 173 743.8 173L743.8 173L740 172.2Q738.2 172.2 737 175.3Q735.8 178.4 735.8 182.4L735.8 182.4Q735.8 194.6 745 194.6L745 194.6Q749.8 194.6 755.8 190.8L755.8 190.8Q768.6 183 783.2 170.8L783.2 170.8Z" />
+          <path d="M803.6 182.8L803.6 182.8Q814.8 182.8 830.4 170.2L830.4 170.2L833.8 171.2Q814.2 187.6 800.0 187.6L800.0 187.6Q798.4 187.6 797.6 187.4L797.6 187.4Q792.2 194 785.8 198.1Q779.4 202.2 774.6 202.2L774.6 202.2Q767.0 202.2 767.0 193.7Q767.0 185.2 781.2 171L781.2 171Q778.8 165.2 778.8 158.8Q778.8 152.4 783.4 148.4Q788.0 144.4 794.1 144.4Q800.2 144.4 804.4 148.4Q808.6 152.4 808.6 159.8L808.6 159.8Q808.6 171.2 801.2 182.6L801.2 182.6Q802.0 182.8 803.6 182.8ZM797.2 180.8L797.2 180.8Q803.4 170.4 803.4 163.1Q803.4 155.8 799.8 152.3Q796.2 148.8 792.8 148.8L792.8 148.8Q785.8 148.8 785.8 156Q785.8 163.2 789.0 170.3Q792.2 177.4 797.2 180.8ZM775.2 192.6L775.2 192.6Q775.2 196.6 780.4 196.6Q785.6 196.6 793.6 186L793.6 186Q788.2 183.2 784.0 176.2L784.0 176.2Q775.2 185.8 775.2 192.6Z" />
+          <path d="M942.2 115.2L942.2 115.2L913.6 113.8Q896.0 113.8 878.6 115.2L878.6 115.2L879.6 119.2Q879.6 121.4 866.6 135.9Q853.6 150.4 840.6 167.5Q827.6 184.6 827.6 192.8L827.6 192.8Q827.6 196 829.9 196Q832.2 196 840.4 190.4L840.4 190.4Q855.6 180.4 868.2 170.2L868.2 170.2L872.6 166.6Q874.0 165.6 875.0 165.6Q876.0 165.6 876.0 166.8L876.0 166.8L876.0 167.4Q876.8 167.4 865.3 176.2Q853.8 185 840.7 193.8Q827.6 202.6 824.2 202.6L824.2 202.6Q818.4 202.6 818.4 197.4L818.4 197.4Q818.4 189.8 826.9 176.4Q835.4 163 845.5 151.1Q855.6 139.2 864.7 128.6Q873.8 118 874.6 115.6L874.6 115.6Q852.6 117.6 840.8 120.4L840.8 120.4L836.8 121.2Q835.2 121.4 835.2 124.2L835.2 124.2Q835.2 125.4 832.4 125.4Q829.6 125.4 825.5 124.1Q821.4 122.8 821.4 120.4Q821.4 118 825.4 117.2L825.4 117.2Q855.0 112 867.4 110.9Q879.8 109.8 883.9 109.5Q888.0 109.2 896.7 109Q905.4 108.8 908.4 108.8L908.4 108.8Q917.4 108.4 929.5 108.4Q941.6 108.4 944.2 109.4Q946.8 110.4 946.8 113.2L946.8 113.2Q946.8 115.2 942.2 115.2Z" />
+          <path d="M892.8 176L892.8 176Q891.6 176 891.6 175.1Q891.6 174.2 893.0 173L893.0 173Q899.6 167.6 899.6 163.2L899.6 163.2Q899.6 160.4 894.6 160L894.6 160Q885.6 160.2 873.1 173Q860.6 185.8 860.6 192.2L860.6 192.2Q860.6 194.4 863.1 194.4Q865.6 194.4 869.8 191L869.8 191Q873.6 188.6 884.0 179L884.0 179Q886.4 176.6 888.6 176.6L888.6 176.6Q891.4 176.6 891.4 179.2L891.4 179.2Q891.4 180.2 890.8 180.8Q890.2 181.4 888.6 183.3Q887.0 185.2 885.8 186.8L885.8 186.8Q882.2 192 882.2 193.6L882.2 193.6Q882.2 197.6 885.4 197.6L885.4 197.6Q889.6 197.6 901.2 189.9Q912.8 182.2 922.4 174.4L922.4 174.4L932.0 166.8Q933.4 165.8 934.6 165.8Q935.8 165.8 935.8 167.2L935.8 167.2L935.8 167.6Q920.4 180.6 903.3 192Q886.2 203.4 880.8 203.4L880.8 203.4Q874.4 203.4 874.4 196.6L874.4 196.6Q874.4 195 875.0 193.6Q875.6 192.2 875.6 191.6Q875.6 191 875.2 190.8L875.2 190.8Q874.6 190.8 867.5 196.2Q860.4 201.6 855.1 201.6Q849.8 201.6 849.8 196Q849.8 190.4 857.3 180.9Q864.8 171.4 877.4 163.6Q890.0 155.8 902.0 155.8L902.0 155.8Q904.8 155.8 906.7 157.2Q908.6 158.6 908.6 161.5Q908.6 164.4 902.8 170.2Q897.0 176 892.8 176Z" />
+        </svg>
+      </div>
     </div>
 
     <!--==================== HEADER ====================-->
-    <header class="header" id="header">
+    <header class="header" id="header" data-theme="light">
       <nav class="nav container" aria-label="Primary">
-        <a href="#home" class="nav__logo" aria-label="Milan Sapkota — home">
-          Milan <span class="nav__br">[</span>Sapkota<span class="nav__br">]</span>
+        <!-- Starts as the giant hero name and shrinks into this logo on scroll. -->
+        <a href="#home" class="nav__logo" id="brand" aria-label="Milan Sapkota — home">
+          <span class="brand__text">Milan <span class="nav__br">[</span>Sapkota<span class="nav__br">]</span></span>
         </a>
 
         <div class="nav__actions">
@@ -139,33 +158,44 @@
 
     <main id="main">
       <!--==================== HERO ====================-->
-      <section class="hero theme-light" id="home" data-nav="light">
-        <h1 class="hero__name container">
-          <span class="fit" id="hero-name"
-            >Milan <span class="hero__br">[</span>Sapkota<span class="hero__br">]</span></span
-          >
+      <section class="hero theme-light" id="home" data-nav="light" data-trail>
+        <!-- Visible name for no-JS; with JS it is the landing spot of the header logo. -->
+        <h1 class="hero__name container" id="hero-name">
+          <span class="fit">Milan <span class="hero__br">[</span>Sapkota<span class="hero__br">]</span></span>
           <span class="sr-only">, Frontend Developer</span>
         </h1>
 
-        <div class="hero__media">
+        <div class="hero__media" data-reveal>
           <img
             src="assets/img/hero-portrait.jpg"
             alt="Portrait of Milan Sapkota"
             width="1200"
             height="1600"
             fetchpriority="high"
+            data-parallax="12"
           />
         </div>
 
         <div class="hero__foot container">
-          <p class="tag-pill">
+          <p class="tag-pill" data-reveal>
             React <span class="dot" aria-hidden="true"></span> Next.js
             <span class="dot" aria-hidden="true"></span> TypeScript
           </p>
-          <p class="hero__loc">
+          <p class="hero__loc" data-reveal>
             <span>Panauti, Nepal,<br />working globally.</span>
             <i class="uil uil-globe hero__globe" aria-hidden="true"></i>
           </p>
+        </div>
+
+        <!-- Screenshots that trail the cursor across the hero (fine pointers only). -->
+        <div class="trail" aria-hidden="true">
+          <img data-src="assets/img/project-chairlyo.jpg" alt="" />
+          <img data-src="assets/img/project-ats.jpg" alt="" />
+          <img data-src="assets/img/image1.png" alt="" />
+          <img data-src="assets/img/project-voting.jpg" alt="" />
+          <img data-src="assets/img/image3.png" alt="" />
+          <img data-src="assets/img/image2.png" alt="" />
+          <img data-src="assets/img/image4.png" alt="" />
         </div>
       </section>
 
@@ -173,135 +203,150 @@
       <section class="about theme-light" id="about" data-nav="light">
         <div class="container">
           <div class="about__intro">
-            <h2 class="display about__title reveal">Frontend<br />developer</h2>
-            <p class="about__lede reveal">
+            <h2 class="display about__title" data-split-roll>Frontend<br />developer</h2>
+            <p class="about__lede" data-split-lines>
               Scalable, responsive interfaces for SaaS products — built with
               React, Next.js and TypeScript and shipped to production.
             </p>
           </div>
 
           <div class="about__row">
-          <figure class="about__media reveal">
-            <img
-              src="assets/img/about-portrait.jpg"
-              alt="Milan Sapkota standing on a balcony in Nepal"
-              width="900"
-              height="1125"
-              loading="lazy"
-            />
-            <figcaption class="tag-pill">Based in Nepal</figcaption>
-          </figure>
+            <figure class="about__media reveal">
+              <img
+                src="assets/img/about-portrait.jpg"
+                alt="Milan Sapkota standing on a balcony in Nepal"
+                width="900"
+                height="1125"
+                loading="lazy"
+                data-parallax="5"
+              />
+              <figcaption class="tag-pill">Based in Nepal</figcaption>
+            </figure>
 
-          <div class="about__body">
-            <h2 class="bracket reveal">[ About me ]</h2>
-            <p class="reveal">
-              I'm Milan, a Frontend Developer building and maintaining a SaaS
-              CRM platform in React and TypeScript — scalable, reusable and
-              responsive UI, backed by RESTful API integrations delivered
-              alongside designers and backend engineers.
-            </p>
-            <p class="reveal">
-              Over the last few years I've shipped server-side rendered and
-              static applications with Next.js, turned UI concepts into working
-              products, and mentored interns and junior developers on React best
-              practices. I hold a BSc. in Computer Science and Information
-              Technology from Tribhuvan University.
-            </p>
+            <div class="about__body">
+              <h2 class="bracket" data-bracket><span class="bracket__l">[</span> About me <span class="bracket__r">]</span></h2>
+              <p data-split-lines>
+                I'm Milan, a Frontend Developer building and maintaining a SaaS
+                CRM platform in React and TypeScript — scalable, reusable and
+                responsive UI, backed by RESTful API integrations delivered
+                alongside designers and backend engineers.
+              </p>
+              <p data-split-lines>
+                Over the last few years I've shipped server-side rendered and
+                static applications with Next.js, turned UI concepts into
+                working products, and mentored interns and junior developers on
+                React best practices. I hold a BSc. in Computer Science and
+                Information Technology from Tribhuvan University.
+              </p>
 
-            <ul class="stats reveal">
-              <li><span class="stats__num"><span data-count="2">2</span>+</span><span class="stats__label">Years experience</span></li>
-              <li><span class="stats__num"><span data-count="9">9</span>+</span><span class="stats__label">Projects delivered</span></li>
-              <li><span class="stats__num"><span data-count="20">20</span>+</span><span class="stats__label">Technologies</span></li>
-            </ul>
+              <ul class="stats reveal">
+                <li><span class="stats__num"><span data-count="2">2</span>+</span><span class="stats__label">Years experience</span></li>
+                <li><span class="stats__num"><span data-count="9">9</span>+</span><span class="stats__label">Projects delivered</span></li>
+                <li><span class="stats__num"><span data-count="20">20</span>+</span><span class="stats__label">Technologies</span></li>
+              </ul>
 
-            <a href="#contact" class="pill pill--blue reveal">
-              <span class="pill__roll"><span>Let's talk</span></span>
-            </a>
-          </div>
+              <a href="#contact" class="pill pill--blue reveal">
+                <span class="pill__roll"><span>Let's talk</span></span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      <!--==================== SERVICES INTRO + WIPE ====================-->
+      <!--==================== SERVICES INTRO + DRAW TRANSITION ====================-->
+      <!-- Pinned: a marker scribble draws across the screen and fattens until
+           everything is blue. -->
       <div class="wipe theme-light" id="wipe" data-nav="light">
-        <div class="wipe__sticky">
+        <div class="wipe__inner">
           <p class="wipe__statement display">
-            <span class="wipe__small">Small details.</span>
-            <span class="wipe__big">Big impact.</span>
+            <span class="wipe__small" data-split-roll>Small details.</span>
+            <span class="wipe__big" data-split-roll>Big impact.</span>
           </p>
-          <h2 class="bracket bracket--blue">[ Services ]</h2>
-          <div class="wipe__blob" aria-hidden="true"></div>
+          <h2 class="bracket bracket--blue" data-bracket><span class="bracket__l">[</span> Services <span class="bracket__r">]</span></h2>
         </div>
+        <div class="wipe__fill" aria-hidden="true"></div>
+        <svg class="wipe__draw" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M-50 99C16 74 27 34 110 39C193 45 159 -2 149 112C138 227 -6 310 85 314C177 318 364 4 368 122C373 239 -64 604 96 596C256 587 739 21 753 101C766 182 55 785 129 789C203 794 871 72 931 112C990 153 290 739 273 887C256 1034 756 465 889 466C1023 467 600 783 594 888C588 994 737 726 874 719C1012 711 929 757 924 871C919 984 805 890 862 990C920 1090 979 1060 1062 1110" />
+        </svg>
       </div>
 
       <!--==================== SERVICES ====================-->
+      <!-- Desktop: pinned accordion — each panel collapses as the next image wipes in. -->
       <section class="services theme-blue" id="services" data-nav="blue">
         <ol class="svc-list">
-          <li class="svc" style="--i: 0">
+          <li class="svc">
             <div class="svc__bar container">
               <span class="svc__num">[01]</span>
               <h3 class="svc__title display">Frontend engineering</h3>
             </div>
-            <div class="svc__body container">
-              <p class="svc__text">
-                Reusable component architecture in React and TypeScript —
-                interfaces that stay consistent and easy to extend as the
-                product grows. Tailwind CSS, shadcn/ui and Ant Design.
-              </p>
-              <div class="svc__media">
-                <img src="assets/img/project-chairlyo.jpg" alt="Chairlyo salon management platform" loading="lazy" />
+            <div class="svc__visual">
+              <div class="svc__inner container">
+                <p class="svc__text">
+                  Reusable component architecture in React and TypeScript —
+                  interfaces that stay consistent and easy to extend as the
+                  product grows. Tailwind CSS, shadcn/ui and Ant Design.
+                </p>
+                <div class="svc__media">
+                  <img src="assets/img/project-chairlyo.jpg" alt="Chairlyo salon management platform" loading="lazy" />
+                  <a class="svc__project" href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer">Chairlyo — Salon Management ↗</a>
+                </div>
               </div>
-              <p class="svc__project"><a href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer">Chairlyo — Salon Management ↗</a></p>
             </div>
           </li>
-          <li class="svc" style="--i: 1">
+          <li class="svc">
             <div class="svc__bar container">
               <span class="svc__num">[02]</span>
               <h3 class="svc__title display">SaaS dashboards &amp; CRMs</h3>
             </div>
-            <div class="svc__body container">
-              <p class="svc__text">
-                Data-heavy products — CRMs, scheduling, POS, analytics and
-                applicant tracking — with role-based access, protected routes
-                and fast, predictable state.
-              </p>
-              <div class="svc__media">
-                <div class="cover cover--ink"><i class="uil uil-clipboard-notes" aria-hidden="true"></i><span>Employee Screening</span></div>
+            <div class="svc__visual">
+              <div class="svc__inner container">
+                <p class="svc__text">
+                  Data-heavy products — CRMs, scheduling, POS, analytics and
+                  applicant tracking — with role-based access, protected routes
+                  and fast, predictable state.
+                </p>
+                <div class="svc__media">
+                  <div class="cover cover--ink"><i class="uil uil-clipboard-notes" aria-hidden="true"></i><span>Employee Screening</span></div>
+                  <a class="svc__project" href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer">Employee Screening Platform ↗</a>
+                </div>
               </div>
-              <p class="svc__project"><a href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer">Employee Screening Platform ↗</a></p>
             </div>
           </li>
-          <li class="svc" style="--i: 2">
+          <li class="svc">
             <div class="svc__bar container">
               <span class="svc__num">[03]</span>
               <h3 class="svc__title display">API integration</h3>
             </div>
-            <div class="svc__body container">
-              <p class="svc__text">
-                Frontends wired cleanly to Django, Laravel, .NET and Node
-                backends — JWT auth, data fetching, caching and real-time
-                updates over WebSocket.
-              </p>
-              <div class="svc__media">
-                <img src="assets/img/image1.png" alt="Job Recommendation System landing page" loading="lazy" />
+            <div class="svc__visual">
+              <div class="svc__inner container">
+                <p class="svc__text">
+                  Frontends wired cleanly to Django, Laravel, .NET and Node
+                  backends — JWT auth, data fetching, caching and real-time
+                  updates over WebSocket.
+                </p>
+                <div class="svc__media">
+                  <img src="assets/img/image1.png" alt="Job Recommendation System landing page" loading="lazy" />
+                  <a class="svc__project" href="https://connect-pro-umber.vercel.app/" target="_blank" rel="noopener noreferrer">Job Recommendation System ↗</a>
+                </div>
               </div>
-              <p class="svc__project"><a href="https://connect-pro-umber.vercel.app/" target="_blank" rel="noopener noreferrer">Job Recommendation System ↗</a></p>
             </div>
           </li>
-          <li class="svc" style="--i: 3">
+          <li class="svc">
             <div class="svc__bar container">
               <span class="svc__num">[04]</span>
               <h3 class="svc__title display">Performance &amp; SEO</h3>
             </div>
-            <div class="svc__body container">
-              <p class="svc__text">
-                Server-side and static rendering with Next.js, lean bundles and
-                responsive layouts that load fast and rank well.
-              </p>
-              <div class="svc__media">
-                <img src="assets/img/project-ats.jpg" alt="ATS Fleexii applicant tracking system" loading="lazy" />
+            <div class="svc__visual">
+              <div class="svc__inner container">
+                <p class="svc__text">
+                  Server-side and static rendering with Next.js, lean bundles
+                  and responsive layouts that load fast and rank well.
+                </p>
+                <div class="svc__media">
+                  <img src="assets/img/project-ats.jpg" alt="ATS Fleexii applicant tracking system" loading="lazy" />
+                  <a class="svc__project" href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer">Multi-Tenant ATS ↗</a>
+                </div>
               </div>
-              <p class="svc__project"><a href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer">Multi-Tenant ATS ↗</a></p>
             </div>
           </li>
         </ol>
@@ -311,8 +356,8 @@
       <section class="experience section theme-light" id="experience" data-nav="light">
         <div class="container">
           <div class="center-head">
-            <h2 class="bracket reveal">[ Experience ]</h2>
-            <p class="display center-head__sub reveal">
+            <h2 class="bracket" data-bracket><span class="bracket__l">[</span> Experience <span class="bracket__r">]</span></h2>
+            <p class="display center-head__sub" data-split-roll>
               Where I've shipped<br />to production.
             </p>
           </div>
@@ -362,50 +407,48 @@
       <section class="projects section theme-light" id="projects" data-nav="light">
         <div class="container">
           <div class="center-head">
-            <h2 class="bracket reveal">[ Projects ]</h2>
-            <p class="display center-head__sub reveal">
+            <h2 class="bracket" data-bracket><span class="bracket__l">[</span> Projects <span class="bracket__r">]</span></h2>
+            <p class="display center-head__sub" data-split-roll>
               Turning product ideas into<br />working software.
             </p>
           </div>
 
-          <div class="orbit reveal" id="orbit" tabindex="0" aria-roledescription="carousel" aria-label="Projects">
+          <div class="orbit" id="orbit" aria-roledescription="carousel" aria-label="Projects">
             <p class="orbit__count" aria-hidden="true">
-              <span id="orbit-current">01</span> / <span id="orbit-total">08</span>
+              <span class="orbit__count-mask"><span id="orbit-current">01</span></span> / <span id="orbit-total">08</span>
             </p>
 
-            <!-- Fanned cards; JS positions them around the active one. -->
-            <div class="orbit__stage" aria-hidden="true">
-              <div class="orbit__card"><img src="assets/img/project-chairlyo.jpg" alt="" loading="lazy" /></div>
-              <div class="orbit__card"><div class="cover cover--ink"><i class="uil uil-clipboard-notes"></i><span>Employee Screening</span></div></div>
-              <div class="orbit__card"><img src="assets/img/image1.png" alt="" loading="lazy" /></div>
-              <div class="orbit__card"><img src="assets/img/project-ats.jpg" alt="" loading="lazy" /></div>
-              <div class="orbit__card"><img src="assets/img/image4.png" alt="" loading="lazy" /></div>
-              <div class="orbit__card"><img src="assets/img/image2.png" alt="" loading="lazy" /></div>
-              <div class="orbit__card"><img src="assets/img/image3.png" alt="" loading="lazy" /></div>
-              <div class="orbit__card"><img src="assets/img/project-voting.jpg" alt="" loading="lazy" /></div>
+            <!-- Cards ride a slowly spinning ring; the front one widens and opens. -->
+            <div class="orbit__stage">
+              <ul class="orbit__ring" id="orbit-ring">
+                <li class="orbit__tile"><a class="orbit__card" href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Chairlyo"><span class="orbit__mask"><img src="assets/img/project-chairlyo.jpg" alt="" loading="lazy" /></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Employee Screening"><span class="orbit__mask"><span class="cover cover--ink"><i class="uil uil-clipboard-notes" aria-hidden="true"></i><span>Employee Screening</span></span></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" href="https://connect-pro-umber.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Open Job Recommendation System"><span class="orbit__mask"><img src="assets/img/image1.png" alt="" loading="lazy" /></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Open ATS Fleexii"><span class="orbit__mask"><img src="assets/img/project-ats.jpg" alt="" loading="lazy" /></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" href="http://weblinxits.com" target="_blank" rel="noopener noreferrer" aria-label="Open Finman"><span class="orbit__mask"><img src="assets/img/image4.png" alt="" loading="lazy" /></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" aria-label="Family Tree Visualiser"><span class="orbit__mask"><img src="assets/img/image2.png" alt="" loading="lazy" /></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" href="https://itbridge.com.np/" target="_blank" rel="noopener noreferrer" aria-label="Open IT Bridge Nepal"><span class="orbit__mask"><img src="assets/img/image3.png" alt="" loading="lazy" /></span></a></li>
+                <li class="orbit__tile"><a class="orbit__card" href="https://voting-node-js.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Open VoteHub"><span class="orbit__mask"><img src="assets/img/project-voting.jpg" alt="" loading="lazy" /></span></a></li>
+              </ul>
             </div>
 
             <div class="orbit__info">
               <div class="orbit__details" aria-live="polite">
                 <article class="orbit__item is-active">
-                  <h3 class="orbit__title">Chairlyo — Salon Management</h3>
-                  <p>Scalable frontend modules for a salon and spa management platform. Worked closely with the Django backend team on secure API integrations, authentication, scheduling, POS and analytics.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Chairlyo — Salon Management</h3>
+                  <p data-orbit-lines>Scalable frontend modules for a salon and spa management platform. Worked closely with the Django backend team on secure API integrations, authentication, scheduling, POS and analytics.</p>
                   <p class="orbit__tags">Front-end Lead · React · TypeScript · Vite · Tailwind · Django API</p>
-                  <p class="orbit__links">
-                    <a href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
-                  </p>
+                  <p class="orbit__links"><a href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer">Live site ↗</a></p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">Employee Screening Platform</h3>
-                  <p>A screening platform built with Next.js and shadcn/ui featuring role-based access and protected routes, Laravel API integration for candidate management and SSR-safe dashboards.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Employee Screening Platform</h3>
+                  <p data-orbit-lines>A screening platform built with Next.js and shadcn/ui featuring role-based access and protected routes, Laravel API integration for candidate management and SSR-safe dashboards.</p>
                   <p class="orbit__tags">Front-end Lead · Next.js · TypeScript · shadcn/ui · Laravel API</p>
-                  <p class="orbit__links">
-                    <a href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
-                  </p>
+                  <p class="orbit__links"><a href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer">Live site ↗</a></p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">Job Recommendation System</h3>
-                  <p>A skill-based job matching system where candidates are ranked against openings. Built the frontend and collaborated with the Python/Flask ML team to improve recommendation accuracy.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Job Recommendation System</h3>
+                  <p data-orbit-lines>A skill-based job matching system where candidates are ranked against openings. Built the frontend and collaborated with the Python/Flask ML team to improve recommendation accuracy.</p>
                   <p class="orbit__tags">Front-end Lead · React · Ant Design · Zustand · Flask</p>
                   <p class="orbit__links">
                     <a href="https://connect-pro-umber.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo ↗</a>
@@ -413,41 +456,33 @@
                   </p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">Applicant Tracking System</h3>
-                  <p>A multi-tenant SaaS ATS built with Node.js, Express and Prisma — REST API modules for job posting, hiring pipelines, interview scheduling and offers, with JWT auth and RBAC.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Applicant Tracking System</h3>
+                  <p data-orbit-lines>A multi-tenant SaaS ATS built with Node.js, Express and Prisma — REST API modules for job posting, hiring pipelines, interview scheduling and offers, with JWT auth and RBAC.</p>
                   <p class="orbit__tags">Backend Support · Node.js · Express · Prisma · MySQL</p>
-                  <p class="orbit__links">
-                    <a href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
-                  </p>
+                  <p class="orbit__links"><a href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer">Live site ↗</a></p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">Finman — Finance Management</h3>
-                  <p>A finance management application for tracking income, expenses and budgets. Integrated secure APIs and implemented real-time chat over WebSocket.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Finman — Finance Management</h3>
+                  <p data-orbit-lines>A finance management application for tracking income, expenses and budgets. Integrated secure APIs and implemented real-time chat over WebSocket.</p>
                   <p class="orbit__tags">Front-end Support · React · Ant Design · WebSocket</p>
-                  <p class="orbit__links">
-                    <a href="http://weblinxits.com" target="_blank" rel="noopener noreferrer">Live site ↗</a>
-                  </p>
+                  <p class="orbit__links"><a href="http://weblinxits.com" target="_blank" rel="noopener noreferrer">Live site ↗</a></p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">Family Tree Visualiser</h3>
-                  <p>An interactive family tree that renders complex relationships as a navigable hierarchy with React and D3.js, backed by a .NET + SQL Server API.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Family Tree Visualiser</h3>
+                  <p data-orbit-lines>An interactive family tree that renders complex relationships as a navigable hierarchy with React and D3.js, backed by a .NET + SQL Server API.</p>
                   <p class="orbit__tags">Front-end Lead · React · D3.js · .NET · SQL Server</p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">IT Bridge Nepal Website</h3>
-                  <p>A responsive corporate website built with React, Tailwind CSS and Ant Design, with smooth section-level animations in Framer Motion.</p>
+                  <h3 class="orbit__title" data-orbit-lines>IT Bridge Nepal Website</h3>
+                  <p data-orbit-lines>A responsive corporate website built with React, Tailwind CSS and Ant Design, with smooth section-level animations in Framer Motion.</p>
                   <p class="orbit__tags">Front-end Lead · React · Tailwind · Framer Motion</p>
-                  <p class="orbit__links">
-                    <a href="https://itbridge.com.np/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
-                  </p>
+                  <p class="orbit__links"><a href="https://itbridge.com.np/" target="_blank" rel="noopener noreferrer">Live site ↗</a></p>
                 </article>
                 <article class="orbit__item">
-                  <h3 class="orbit__title">Online Voting Platform</h3>
-                  <p>A secure voting platform on the MERN stack with JWT authentication, role-based access, real-time vote counting and REST APIs for elections, candidates and results.</p>
+                  <h3 class="orbit__title" data-orbit-lines>Online Voting Platform</h3>
+                  <p data-orbit-lines>A secure voting platform on the MERN stack with JWT authentication, role-based access, real-time vote counting and REST APIs for elections, candidates and results.</p>
                   <p class="orbit__tags">MERN Lead · MongoDB · Express · React · Node.js</p>
-                  <p class="orbit__links">
-                    <a href="https://voting-node-js.vercel.app/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
-                  </p>
+                  <p class="orbit__links"><a href="https://voting-node-js.vercel.app/" target="_blank" rel="noopener noreferrer">Live site ↗</a></p>
                 </article>
               </div>
 
@@ -469,8 +504,8 @@
       <!--==================== SKILLS & EDUCATION ====================-->
       <section class="skills section theme-light" id="skills" data-nav="light">
         <div class="container">
-          <h2 class="display skills__title reveal">Skills &amp;<br />education</h2>
-          <p class="skills__lede reveal">
+          <h2 class="display skills__title" data-split-random>Skills &amp;<br />education</h2>
+          <p class="skills__lede" data-split-lines>
             The tools I reach for when building and shipping web applications —
             and the degree behind them.
           </p>
@@ -521,34 +556,25 @@
 
       <!--==================== CONTACT ====================-->
       <section class="contact theme-dark" id="contact" data-nav="dark">
-        <div class="contact__hero">
-          <!-- "Contact" in other languages drifting around the heading -->
-          <ul class="contact__words" aria-hidden="true">
-            <li style="--x: 4%; --y: 8%; --s: 2.4; --d: 0s">Contacto</li>
-            <li style="--x: 62%; --y: 6%; --s: 2; --d: -3s">Contactez</li>
-            <li style="--x: 82%; --y: 16%; --s: 1.6; --d: -6s">Kontakt</li>
-            <li style="--x: 14%; --y: 22%; --s: 1.4; --d: -2s">Contatto</li>
-            <li style="--x: 72%; --y: 26%; --s: 1.8; --d: -8s">Επικοινωνία</li>
-            <li style="--x: 3%; --y: 74%; --s: 2.6; --d: -4s">सम्पर्क</li>
-            <li style="--x: 30%; --y: 84%; --s: 2; --d: -7s">연락</li>
-            <li style="--x: 80%; --y: 78%; --s: 2.2; --d: -1s">連絡</li>
-            <li style="--x: 60%; --y: 92%; --s: 1.5; --d: -5s">संपर्क</li>
-            <li style="--x: 6%; --y: 94%; --s: 2.2; --d: -9s">Contact</li>
-          </ul>
-
-          <div class="contact__center">
-            <h2 class="display contact__title reveal">Contact</h2>
-            <p class="contact__text reveal">
-              Got a role or a project in mind? I'd love to hear about it. Tell
-              me what you need and I'll reply within a day.
-            </p>
-            <div class="contact__ctas reveal">
-              <a href="mailto:sp.milan04@gmail.com" class="pill pill--light">
-                <span class="pill__roll"><span>Email me</span></span>
-              </a>
-              <a href="#contactForm" class="pill pill--blue">
-                <span class="pill__roll"><span>Send a message</span></span>
-              </a>
+        <!-- Tall scroll track: "contact" in many languages flies out of the
+             depth toward the viewer while the heading sharpens. -->
+        <div class="contact__track" id="contact-track">
+          <div class="contact__sticky">
+            <div class="contact__words" id="contact-words" aria-hidden="true"></div>
+            <div class="contact__center" id="contact-content">
+              <h2 class="display contact__title">Contact</h2>
+              <p class="contact__text">
+                Got a role or a project in mind? I'd love to hear about it.
+                Tell me what you need and I'll reply within a day.
+              </p>
+              <div class="contact__ctas">
+                <a href="mailto:sp.milan04@gmail.com" class="pill pill--light">
+                  <span class="pill__roll"><span>Email me</span></span>
+                </a>
+                <a href="#contactForm" class="pill pill--blue">
+                  <span class="pill__roll"><span>Send a message</span></span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -585,45 +611,56 @@
     </main>
 
     <!--==================== FOOTER ====================-->
-    <footer class="footer theme-dark" data-nav="dark">
-      <div class="container">
-        <div class="footer__cols">
-          <div>
-            <p class="footer__label">[ Socials ]</p>
-            <ul>
-              <li><a href="https://www.linkedin.com/in/milan-sapkota-564294228/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-              <li><a href="https://github.com/milansap" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-              <li><a href="https://www.instagram.com/milley.04/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-            </ul>
+    <!-- The inner block slides out from under the page as the footer enters. -->
+    <footer class="footer theme-dark" id="footer" data-nav="dark">
+      <div class="footer__inner" id="footer-inner">
+        <div class="container">
+          <div class="footer__cols">
+            <div>
+              <p class="footer__label">[ Socials ]</p>
+              <ul>
+                <li><a href="https://www.linkedin.com/in/milan-sapkota-564294228/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://github.com/milansap" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a href="https://www.instagram.com/milley.04/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              </ul>
+            </div>
+            <nav aria-label="Footer">
+              <p class="footer__label">[ Nav ]</p>
+              <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#qualification">Education</a></li>
+              </ul>
+            </nav>
+            <div>
+              <p class="footer__label">[ Contact ]</p>
+              <ul>
+                <li><a href="mailto:sp.milan04@gmail.com">sp.milan04@gmail.com</a></li>
+                <li><a href="tel:+9779861449329">+977 9861449329</a></li>
+              </ul>
+            </div>
           </div>
-          <nav aria-label="Footer">
-            <p class="footer__label">[ Nav ]</p>
-            <ul>
-              <li><a href="#about">About</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#projects">Projects</a></li>
-              <li><a href="#qualification">Education</a></li>
-            </ul>
-          </nav>
-          <div>
-            <p class="footer__label">[ Contact ]</p>
-            <ul>
-              <li><a href="mailto:sp.milan04@gmail.com">sp.milan04@gmail.com</a></li>
-              <li><a href="tel:+9779861449329">+977 9861449329</a></li>
-            </ul>
+
+          <p class="footer__mark" aria-hidden="true">
+            <span class="fit">Milan <span class="hero__br">[</span>Sapkota<span class="hero__br">]</span></span>
+          </p>
+
+          <div class="footer__bottom">
+            <p>Small details, big impact</p>
+            <p>&copy; <span id="footer-year">2026</span>, Milan Sapkota</p>
           </div>
-        </div>
-
-        <p class="footer__mark" aria-hidden="true">
-          <span class="fit" id="footer-name">Milan <span class="hero__br">[</span>Sapkota<span class="hero__br">]</span></span>
-        </p>
-
-        <div class="footer__bottom">
-          <p>Small details, big impact</p>
-          <p>&copy; <span id="footer-year">2026</span>, Milan Sapkota</p>
         </div>
       </div>
     </footer>
+
+    <!-- Animation libraries (GSAP 3.15 incl. free SplitText / DrawSVG, Lenis smooth scroll) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js"></script>
 
     <script src="assets/ptj.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
