@@ -196,14 +196,23 @@
   }
 
   /*==================== INTRO ====================*/
-  // Signature draws stroke by stroke, then the fat blue ribbon retracts along
-  // its own path to uncover the page, and the hero rises in.
+  // Corner labels slide in and a counter runs while the signature is written
+  // stroke by stroke; the ink then fills in solid, the tagline rolls in, and
+  // everything lifts away as the blue scribble unwinds to uncover the page.
   function runIntro() {
     const loader = $("#loader");
     const shape = $$(".loader__shape path");
     const sigWrap = $(".loader__sig-wrap");
+    const center = $(".loader__center");
     const sig = $$(".loader__sig path");
+    const meta = $(".loader__meta");
+    const corners = $$(".loader__corner > span");
+    const lineFill = $(".loader__line-fill");
+    const tag = $(".loader__tag");
+    const count = $("#loader-count");
+    const year = $(".loader__year");
     const reveals = [$(".brand__text"), ...$$("[data-reveal]")].filter(Boolean);
+    if (year) year.textContent = String(new Date().getFullYear());
 
     let seen = false;
     try {
@@ -232,23 +241,52 @@
     if (lenis) lenis.stop();
     window.scrollTo(0, 0);
 
+    const tagChars = tag ? SplitText.create(tag, { type: "chars", mask: "chars" }).chars : [];
+    const stagger = 0.11;
+    const strokeDur = (i, el) => gsap.utils.mapRange(0, 2600, 0.3, 0.65, el.getTotalLength());
+    const writeTime = (sig.length - 1) * stagger + 0.65;
+    const counter = { v: 0 };
+
     const tl = gsap.timeline({ onComplete: done });
     tl.set(reveals, { yPercent: 25, autoAlpha: 0 })
       .set(shape, { drawSVG: "0% 100%", strokeWidth: "80%" })
-      .set(sig, { drawSVG: "0% 0%" })
-      .set(sigWrap, { visibility: "visible" })
-      // Longer strokes take a little longer, like a real pen.
-      .to(sig, {
-        drawSVG: "0% 100%",
-        duration: (i, el) => gsap.utils.mapRange(0, 2600, 0.25, 0.6, el.getTotalLength()),
-        stagger: 0.11,
-        ease: "power1.inOut",
-      })
-      .to({}, { duration: 0.35 })
-      .to(sig, { drawSVG: "100% 100%", duration: 0.8, stagger: 0.03, ease: "power2.inOut" })
-      .to(shape, { drawSVG: "100% 100%", strokeWidth: "5%", duration: 1.25, ease: "power1.inOut" }, "<0.35")
-      .set(sigWrap, { visibility: "hidden" })
-      .to(reveals, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.15, ease: "expo.out" }, "<0.15");
+      .set(sig, { drawSVG: "0% 0%", fillOpacity: 0, strokeOpacity: 1 })
+      .set(center, { scale: 0.96, rotation: -2 })
+      .set(tagChars, { yPercent: 110 })
+      .set(corners, { yPercent: 110 })
+      .set([sigWrap, meta], { visibility: "visible" })
+
+      // Frame comes in.
+      .to(corners, { yPercent: 0, duration: 0.8, stagger: 0.06, ease: "expo.out" }, 0)
+      .addLabel("write", 0.15)
+
+      // Pen writes the name while the counter and progress line keep time.
+      .to(sig, { drawSVG: "0% 100%", duration: strokeDur, stagger, ease: "power1.inOut" }, "write")
+      .to(center, { scale: 1, rotation: 0, duration: writeTime + 0.4, ease: "power2.out" }, "write")
+      .to(lineFill, { scaleX: 1, duration: writeTime, ease: "power2.inOut" }, "write")
+      .to(
+        counter,
+        {
+          v: 100,
+          duration: writeTime,
+          ease: "power2.inOut",
+          onUpdate: () => count && (count.textContent = pad(Math.round(counter.v)).padStart(3, "0")),
+        },
+        "write"
+      )
+
+      // Ink fills in solid and the tagline rolls up letter by letter.
+      .to(sig, { fillOpacity: 1, strokeOpacity: 0, duration: 0.55, stagger: 0.025, ease: "power2.out" }, "-=0.35")
+      .to(tagChars, { yPercent: 0, duration: 0.7, stagger: 0.025, ease: "power4.out" }, "<")
+      .to({}, { duration: 0.4 })
+
+      // Everything lifts away and the scribble unwinds to reveal the page.
+      .addLabel("exit")
+      .to(center, { yPercent: -18, autoAlpha: 0, filter: "blur(10px)", duration: 0.7, ease: "power3.in" }, "exit")
+      .to(corners, { yPercent: -110, duration: 0.5, stagger: 0.04, ease: "power3.in" }, "exit")
+      .to(shape, { drawSVG: "100% 100%", strokeWidth: "5%", duration: 1.25, ease: "power1.inOut" }, "exit+=0.3")
+      .set([sigWrap, meta], { visibility: "hidden" })
+      .to(reveals, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.15, ease: "expo.out" }, "exit+=0.85");
   }
 
   /*==================== HERO NAME → HEADER LOGO ====================*/

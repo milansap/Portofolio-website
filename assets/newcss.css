@@ -343,18 +343,101 @@ html.js .loader {
   visibility: hidden;
 }
 
+.loader__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  color: #fff;
+}
+
 .loader__sig {
   width: min(84vw, 44rem);
   height: auto;
   overflow: visible;
 }
 
+/* Drawn as a pen stroke first, then filled in solid (fill-opacity via JS). */
 .loader__sig path {
-  fill: none;
+  fill: #fff;
+  fill-opacity: 0;
   stroke: #fff;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.loader__line {
+  position: relative;
+  display: block;
+  width: min(60vw, 22rem);
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.loader__line-fill {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.loader__tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* Small labels pinned to the four corners of the screen. */
+.loader__meta {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.loader__corner {
+  position: absolute;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.loader__corner > span {
+  display: inline-block;
+}
+
+.loader__corner--tl {
+  top: 1.5rem;
+  left: var(--gutter);
+}
+
+.loader__corner--tr {
+  top: 1.5rem;
+  right: var(--gutter);
+}
+
+.loader__corner--bl {
+  bottom: 1.5rem;
+  left: var(--gutter);
+}
+
+.loader__corner--br {
+  right: var(--gutter);
+  bottom: 1.1rem;
+}
+
+.loader__count {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 /*==================== HEADER ====================*/

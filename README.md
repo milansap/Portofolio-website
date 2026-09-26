@@ -72,6 +72,21 @@ Sections live in `index.html` in page order: hero, about, services intro
 
 Any element given `class="reveal"` rises in when scrolled into view.
 
+## Deploying
+
+The site is served by GitHub Pages behind Cloudflare. Cloudflare caches CSS
+and JS for about 4 hours but HTML for 10 minutes, so without versioned URLs a
+push can leave visitors with the new `index.html` and the old scripts, which
+breaks the animations. Before every commit that touches `assets/`, run:
+
+```powershell
+npm run bump
+```
+
+`scripts/bump-assets.js` stamps each local asset URL in `index.html` with a
+hash of the file's contents (`assets/ptj.js?v=06d84161`). Unchanged files keep
+their URL (and stay cached); changed files get a new one and are fetched fresh.
+
 ## Running locally
 
 ```powershell
