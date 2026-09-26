@@ -15,7 +15,7 @@
       content="Milan Sapkota, Frontend Developer, React Developer, Next.js, TypeScript, Tailwind CSS, Nepal, portfolio"
     />
     <meta name="author" content="Milan Sapkota" />
-    <meta name="theme-color" content="#7c3aed" />
+    <meta name="theme-color" content="#e2e1e1" />
     <link rel="canonical" href="https://www.sapkotamilan.com.np/" />
 
     <!-- Open Graph -->
@@ -47,12 +47,12 @@
     <link rel="icon" href="./assets/img/letter-m.png" type="image/png" />
     <link rel="apple-touch-icon" href="./assets/img/letter-m.png" />
 
-    <!-- Fonts -->
+    <!-- Fonts: Archivo (variable width + weight) and a script face for the intro signature -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Mrs+Saint+Delafield&display=swap"
     />
 
     <!-- Icons -->
@@ -64,1209 +64,566 @@
     <!-- Styles -->
     <link rel="stylesheet" href="assets/newcss.css" />
 
-    <!-- Apply the saved theme before first paint to avoid a flash -->
+    <!-- Mark JS early so the intro and reveals can start hidden without a flash. -->
     <script>
-      (function () {
-        try {
-          var saved = localStorage.getItem("selected-theme");
-          var prefersDark =
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches;
-          if (saved === "dark" || (!saved && prefersDark)) {
-            document.documentElement.classList.add("theme-dark-preload");
-          }
-        } catch (e) {
-          /* storage unavailable — fall back to light */
-        }
-      })();
+      document.documentElement.classList.add("js");
     </script>
-    <style>
-      html.theme-dark-preload,
-      html.theme-dark-preload body {
-        background-color: #0a0c14;
-      }
-    </style>
-
-    <!-- Reveal-on-scroll starts hidden, so show everything when JS is off. -->
-    <noscript>
-      <style>
-        .reveal {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-      </style>
-    </noscript>
   </head>
 
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
+    <!--==================== INTRO LOADER ====================-->
+    <div class="loader" id="loader" aria-hidden="true">
+      <svg class="loader__sig" viewBox="0 0 700 260">
+        <text x="350" y="170" text-anchor="middle">Milan Sapkota</text>
+      </svg>
+    </div>
+
     <!--==================== HEADER ====================-->
-    <header class="header" id="header" role="banner">
+    <header class="header" id="header">
       <nav class="nav container" aria-label="Primary">
         <a href="#home" class="nav__logo" aria-label="Milan Sapkota — home">
-          <span class="nav__logo-mark" aria-hidden="true">MS</span>
-          <span class="nav__logo-text">Milan Sapkota</span>
+          Milan <span class="nav__br">[</span>Sapkota<span class="nav__br">]</span>
         </a>
 
-        <div class="nav__menu" id="nav-menu">
-          <ul class="nav__list">
-            <li class="nav__item">
-              <a href="#home" class="nav__link active-link">
-                <i class="uil uil-estate nav__icon" aria-hidden="true"></i>Home
-              </a>
-            </li>
-            <li class="nav__item">
-              <a href="#about" class="nav__link">
-                <i class="uil uil-user nav__icon" aria-hidden="true"></i>About
-              </a>
-            </li>
-            <li class="nav__item">
-              <a href="#experience" class="nav__link">
-                <i class="uil uil-briefcase-alt nav__icon" aria-hidden="true"></i
-                >Experience
-              </a>
-            </li>
-            <li class="nav__item">
-              <a href="#projects" class="nav__link">
-                <i class="uil uil-layers nav__icon" aria-hidden="true"></i
-                >Projects
-              </a>
-            </li>
-            <li class="nav__item">
-              <a href="#skills" class="nav__link">
-                <i class="uil uil-brackets-curly nav__icon" aria-hidden="true"></i
-                >Skills
-              </a>
-            </li>
-            <li class="nav__item">
-              <a href="#contact" class="nav__link">
-                <i class="uil uil-message nav__icon" aria-hidden="true"></i
-                >Contact
-              </a>
-            </li>
-          </ul>
-          <button class="nav__close" id="nav-close" aria-label="Close menu">
-            <i class="uil uil-times" aria-hidden="true"></i>
-          </button>
-        </div>
-
-        <div class="nav__btns">
+        <div class="nav__actions">
           <a
             href="assets/Milan_Sapkota_Resume.pdf"
             download="Milan-Sapkota-Frontend-Developer.pdf"
-            class="button button--small nav__cta"
+            class="pill pill--ink nav__cv"
           >
-            <i class="uil uil-file-download-alt button__icon" aria-hidden="true"></i>
-            Resume
+            <span class="pill__roll"><span>Download CV</span></span>
+          </a>
+          <a href="#contact" class="pill pill--blue nav__talk">
+            <span class="pill__roll"><span>Let's talk</span></span>
           </a>
           <button
-            class="nav__action change-theme"
-            id="theme-button"
-            aria-label="Toggle dark mode"
-            aria-pressed="false"
-          >
-            <i class="uil uil-moon" aria-hidden="true"></i>
-          </button>
-          <button
-            class="nav__action nav__toggle"
+            class="nav__toggle"
             id="nav-toggle"
             aria-label="Open menu"
             aria-expanded="false"
-            aria-controls="nav-menu"
+            aria-controls="menu"
           >
-            <i class="uil uil-apps" aria-hidden="true"></i>
+            <span></span><span></span>
           </button>
         </div>
       </nav>
     </header>
-    <div class="nav__backdrop" id="nav-backdrop" hidden></div>
 
-    <main id="main" class="main">
-      <!--==================== HOME ====================-->
-      <section class="home section" id="home">
-        <div class="home__backdrop" aria-hidden="true"></div>
+    <!-- Soft blur under the header, like frosted glass fading downwards -->
+    <div class="top-blur" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
 
-        <div class="home__container container">
-          <div class="home__content">
-            <div class="home__text-content">
-              <p class="home__status">
-                <span class="home__status-dot" aria-hidden="true"></span>
-                Open to frontend roles &amp; freelance work
-              </p>
+    <!-- Full-screen menu -->
+    <div class="menu" id="menu" aria-hidden="true">
+      <ul class="menu__list">
+        <li><a href="#about" class="menu__link"><span>[01]</span>About</a></li>
+        <li><a href="#services" class="menu__link"><span>[02]</span>Services</a></li>
+        <li><a href="#experience" class="menu__link"><span>[03]</span>Experience</a></li>
+        <li><a href="#projects" class="menu__link"><span>[04]</span>Projects</a></li>
+        <li><a href="#skills" class="menu__link"><span>[05]</span>Skills</a></li>
+        <li><a href="#contact" class="menu__link"><span>[06]</span>Contact</a></li>
+      </ul>
+      <div class="menu__foot">
+        <a href="mailto:sp.milan04@gmail.com">sp.milan04@gmail.com</a>
+        <a href="tel:+9779861449329">+977 9861449329</a>
+        <a
+          href="assets/Milan_Sapkota_Resume.pdf"
+          download="Milan-Sapkota-Frontend-Developer.pdf"
+          >Download CV</a
+        >
+      </div>
+    </div>
 
-              <p class="home__greeting">
-                <span class="home__hand" aria-hidden="true">👋</span>
-                Hello, I'm
-              </p>
+    <main id="main">
+      <!--==================== HERO ====================-->
+      <section class="hero theme-light" id="home" data-nav="light">
+        <h1 class="hero__name container">
+          <span class="fit" id="hero-name"
+            >Milan <span class="hero__br">[</span>Sapkota<span class="hero__br">]</span></span
+          >
+          <span class="sr-only">, Frontend Developer</span>
+        </h1>
 
-              <h1 class="home__title">Milan Sapkota</h1>
+        <div class="hero__media">
+          <img
+            src="assets/img/hero-portrait.jpg"
+            alt="Portrait of Milan Sapkota"
+            width="1200"
+            height="1600"
+            fetchpriority="high"
+          />
+        </div>
 
-              <h2 class="home__subtitle">
-                <span class="home__subtitle-dynamic">Frontend Developer</span>
-              </h2>
-
-              <p class="home__description">
-                I build scalable, responsive interfaces for SaaS products with
-                <strong>React</strong>, <strong>Next.js</strong> and
-                <strong>TypeScript</strong> — from CRM dashboards and scheduling
-                systems to applicant tracking platforms, wired to real APIs and
-                shipped to production.
-              </p>
-
-              <ul class="home__meta">
-                <li class="home__meta-item">
-                  <i class="uil uil-map-marker" aria-hidden="true"></i>
-                  Panauti, Kavre, Nepal
-                </li>
-                <li class="home__meta-item">
-                  <i class="uil uil-globe" aria-hidden="true"></i>
-                  sapkotamilan.com.np
-                </li>
-              </ul>
-
-              <div class="home__cta">
-                <a href="#contact" class="button button--flex">
-                  <i class="uil uil-message button__icon" aria-hidden="true"></i>
-                  Get In Touch
-                </a>
-                <a href="#projects" class="button button--outline">
-                  <i class="uil uil-layers button__icon" aria-hidden="true"></i>
-                  View Projects
-                </a>
-              </div>
-
-              <div class="home__social">
-                <span class="home__social-label">Connect</span>
-                <div class="home__social-links">
-                  <a
-                    href="https://www.linkedin.com/in/milan-sapkota-564294228/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="home__social-icon"
-                    aria-label="LinkedIn profile"
-                  >
-                    <i class="uil uil-linkedin-alt" aria-hidden="true"></i>
-                  </a>
-                  <a
-                    href="https://github.com/milansap"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="home__social-icon"
-                    aria-label="GitHub profile"
-                  >
-                    <i class="uil uil-github-alt" aria-hidden="true"></i>
-                  </a>
-                  <a
-                    href="mailto:sp.milan04@gmail.com"
-                    class="home__social-icon"
-                    aria-label="Send an email"
-                  >
-                    <i class="uil uil-envelope" aria-hidden="true"></i>
-                  </a>
-                  <a
-                    href="tel:+9779861449329"
-                    class="home__social-icon"
-                    aria-label="Call Milan"
-                  >
-                    <i class="uil uil-phone" aria-hidden="true"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="home__image-wrapper">
-              <div class="home__image-container">
-                <div class="home__image-bg" aria-hidden="true"></div>
-                <img
-                  src="assets/img/DSC_7498.jpg"
-                  alt="Portrait of Milan Sapkota"
-                  class="home__img"
-                  width="480"
-                  height="600"
-                  fetchpriority="high"
-                />
-                <p class="home__badge">
-                  <i class="uil uil-bolt-alt" aria-hidden="true"></i>
-                  React &amp; Next.js Specialist
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <ul class="home__stats reveal">
-            <li class="home__stat">
-              <span class="home__stat-number">2+</span>
-              <span class="home__stat-label">Years Experience</span>
-            </li>
-            <li class="home__stat">
-              <span class="home__stat-number">9+</span>
-              <span class="home__stat-label">Projects Delivered</span>
-            </li>
-            <li class="home__stat">
-              <span class="home__stat-number">20+</span>
-              <span class="home__stat-label">Technologies</span>
-            </li>
-            <li class="home__stat">
-              <span class="home__stat-number">BSc.CSIT</span>
-              <span class="home__stat-label">Tribhuvan University</span>
-            </li>
-          </ul>
+        <div class="hero__foot container">
+          <p class="tag-pill">
+            React <span class="dot" aria-hidden="true"></span> Next.js
+            <span class="dot" aria-hidden="true"></span> TypeScript
+          </p>
+          <p class="hero__loc">
+            <span>Panauti, Nepal,<br />working globally.</span>
+            <i class="uil uil-globe hero__globe" aria-hidden="true"></i>
+          </p>
         </div>
       </section>
 
       <!--==================== ABOUT ====================-->
-      <section class="about section section--tinted" id="about">
+      <section class="about theme-light" id="about" data-nav="light">
         <div class="container">
-          <div class="section__header reveal">
-            <span class="section__eyebrow">About</span>
-            <h2 class="section__title">A bit about me</h2>
-            <span class="section__subtitle"
-              >Frontend developer with a backend-aware approach to building
-              products.</span
-            >
+          <div class="about__intro">
+            <h2 class="display about__title reveal">Frontend<br />developer</h2>
+            <p class="about__lede reveal">
+              Scalable, responsive interfaces for SaaS products — built with
+              React, Next.js and TypeScript and shipped to production.
+            </p>
           </div>
 
-          <div class="about__content">
-            <div class="about__image-wrapper reveal">
-              <img
-                src="assets/img/wr.jpg"
-                alt="Milan Sapkota at work"
-                class="about__img"
-                width="400"
-                height="400"
-                loading="lazy"
-              />
-              <div class="about__img-decoration" aria-hidden="true"></div>
-            </div>
+          <div class="about__row">
+          <figure class="about__media reveal">
+            <img
+              src="assets/img/about-portrait.jpg"
+              alt="Milan Sapkota standing on a balcony in Nepal"
+              width="900"
+              height="1125"
+              loading="lazy"
+            />
+            <figcaption class="tag-pill">Based in Nepal</figcaption>
+          </figure>
 
-            <div class="about__data reveal">
-              <h3 class="about__heading">
-                I turn design and product requirements into
-                <span class="text-accent">production-ready interfaces</span>.
-              </h3>
+          <div class="about__body">
+            <h2 class="bracket reveal">[ About me ]</h2>
+            <p class="reveal">
+              I'm Milan, a Frontend Developer building and maintaining a SaaS
+              CRM platform in React and TypeScript — scalable, reusable and
+              responsive UI, backed by RESTful API integrations delivered
+              alongside designers and backend engineers.
+            </p>
+            <p class="reveal">
+              Over the last few years I've shipped server-side rendered and
+              static applications with Next.js, turned UI concepts into working
+              products, and mentored interns and junior developers on React best
+              practices. I hold a BSc. in Computer Science and Information
+              Technology from Tribhuvan University.
+            </p>
 
-              <p class="about__description">
-                I'm a Frontend Developer building and maintaining a SaaS CRM
-                platform in <strong>React</strong> and
-                <strong>TypeScript</strong> — scalable, reusable and responsive
-                UI, backed by RESTful API integrations delivered alongside
-                designers and backend engineers.
-              </p>
+            <ul class="stats reveal">
+              <li><span class="stats__num"><span data-count="2">2</span>+</span><span class="stats__label">Years experience</span></li>
+              <li><span class="stats__num"><span data-count="9">9</span>+</span><span class="stats__label">Projects delivered</span></li>
+              <li><span class="stats__num"><span data-count="20">20</span>+</span><span class="stats__label">Technologies</span></li>
+            </ul>
 
-              <p class="about__description">
-                Over the last few years I've shipped server-side rendered and
-                static applications with <strong>Next.js</strong>, turned UI
-                concepts into working products, and mentored interns and junior
-                developers on React best practices. I hold a BSc. in Computer
-                Science and Information Technology.
-              </p>
-
-              <div class="about__highlights">
-                <div class="about__highlight">
-                  <i class="uil uil-layer-group" aria-hidden="true"></i>
-                  <div>
-                    <span class="about__highlight-title">Scalable UI</span>
-                    <span class="about__highlight-text"
-                      >Reusable component architecture in React &amp;
-                      TypeScript</span
-                    >
-                  </div>
-                </div>
-                <div class="about__highlight">
-                  <i class="uil uil-exchange" aria-hidden="true"></i>
-                  <div>
-                    <span class="about__highlight-title">API Integration</span>
-                    <span class="about__highlight-text"
-                      >Django, Laravel, .NET and Node backends</span
-                    >
-                  </div>
-                </div>
-                <div class="about__highlight">
-                  <i class="uil uil-tachometer-fast-alt" aria-hidden="true"></i>
-                  <div>
-                    <span class="about__highlight-title"
-                      >Performance &amp; SEO</span
-                    >
-                    <span class="about__highlight-text"
-                      >SSR and static rendering with Next.js</span
-                    >
-                  </div>
-                </div>
-                <div class="about__highlight">
-                  <i class="uil uil-users-alt" aria-hidden="true"></i>
-                  <div>
-                    <span class="about__highlight-title">Mentoring</span>
-                    <span class="about__highlight-text"
-                      >Coaching interns and juniors on React practices</span
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="about__actions">
-                <a
-                  href="assets/Milan_Sapkota_Resume.pdf"
-                  download="Milan-Sapkota-Frontend-Developer.pdf"
-                  class="button button--flex"
-                >
-                  <i
-                    class="uil uil-file-download-alt button__icon"
-                    aria-hidden="true"
-                  ></i>
-                  Download CV
-                </a>
-                <a href="#contact" class="button button--outline">
-                  <i class="uil uil-message button__icon" aria-hidden="true"></i>
-                  Let's Talk
-                </a>
-              </div>
-            </div>
+            <a href="#contact" class="pill pill--blue reveal">
+              <span class="pill__roll"><span>Let's talk</span></span>
+            </a>
+          </div>
           </div>
         </div>
       </section>
 
+      <!--==================== SERVICES INTRO + WIPE ====================-->
+      <div class="wipe theme-light" id="wipe" data-nav="light">
+        <div class="wipe__sticky">
+          <p class="wipe__statement display">
+            <span class="wipe__small">Small details.</span>
+            <span class="wipe__big">Big impact.</span>
+          </p>
+          <h2 class="bracket bracket--blue">[ Services ]</h2>
+          <div class="wipe__blob" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!--==================== SERVICES ====================-->
+      <section class="services theme-blue" id="services" data-nav="blue">
+        <ol class="svc-list">
+          <li class="svc" style="--i: 0">
+            <div class="svc__bar container">
+              <span class="svc__num">[01]</span>
+              <h3 class="svc__title display">Frontend engineering</h3>
+            </div>
+            <div class="svc__body container">
+              <p class="svc__text">
+                Reusable component architecture in React and TypeScript —
+                interfaces that stay consistent and easy to extend as the
+                product grows. Tailwind CSS, shadcn/ui and Ant Design.
+              </p>
+              <div class="svc__media">
+                <img src="assets/img/project-chairlyo.jpg" alt="Chairlyo salon management platform" loading="lazy" />
+              </div>
+              <p class="svc__project"><a href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer">Chairlyo — Salon Management ↗</a></p>
+            </div>
+          </li>
+          <li class="svc" style="--i: 1">
+            <div class="svc__bar container">
+              <span class="svc__num">[02]</span>
+              <h3 class="svc__title display">SaaS dashboards &amp; CRMs</h3>
+            </div>
+            <div class="svc__body container">
+              <p class="svc__text">
+                Data-heavy products — CRMs, scheduling, POS, analytics and
+                applicant tracking — with role-based access, protected routes
+                and fast, predictable state.
+              </p>
+              <div class="svc__media">
+                <div class="cover cover--ink"><i class="uil uil-clipboard-notes" aria-hidden="true"></i><span>Employee Screening</span></div>
+              </div>
+              <p class="svc__project"><a href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer">Employee Screening Platform ↗</a></p>
+            </div>
+          </li>
+          <li class="svc" style="--i: 2">
+            <div class="svc__bar container">
+              <span class="svc__num">[03]</span>
+              <h3 class="svc__title display">API integration</h3>
+            </div>
+            <div class="svc__body container">
+              <p class="svc__text">
+                Frontends wired cleanly to Django, Laravel, .NET and Node
+                backends — JWT auth, data fetching, caching and real-time
+                updates over WebSocket.
+              </p>
+              <div class="svc__media">
+                <img src="assets/img/image1.png" alt="Job Recommendation System landing page" loading="lazy" />
+              </div>
+              <p class="svc__project"><a href="https://connect-pro-umber.vercel.app/" target="_blank" rel="noopener noreferrer">Job Recommendation System ↗</a></p>
+            </div>
+          </li>
+          <li class="svc" style="--i: 3">
+            <div class="svc__bar container">
+              <span class="svc__num">[04]</span>
+              <h3 class="svc__title display">Performance &amp; SEO</h3>
+            </div>
+            <div class="svc__body container">
+              <p class="svc__text">
+                Server-side and static rendering with Next.js, lean bundles and
+                responsive layouts that load fast and rank well.
+              </p>
+              <div class="svc__media">
+                <img src="assets/img/project-ats.jpg" alt="ATS Fleexii applicant tracking system" loading="lazy" />
+              </div>
+              <p class="svc__project"><a href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer">Multi-Tenant ATS ↗</a></p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
       <!--==================== EXPERIENCE ====================-->
-      <section class="experience section" id="experience">
+      <section class="experience section theme-light" id="experience" data-nav="light">
         <div class="container">
-          <div class="section__header reveal">
-            <span class="section__eyebrow">Career</span>
-            <h2 class="section__title">Work Experience</h2>
-            <span class="section__subtitle"
-              >Roles where I've shipped frontend work to production.</span
-            >
+          <div class="center-head">
+            <h2 class="bracket reveal">[ Experience ]</h2>
+            <p class="display center-head__sub reveal">
+              Where I've shipped<br />to production.
+            </p>
           </div>
 
-          <div class="timeline">
-            <!-- Vrit Technologies -->
-            <article class="timeline__item reveal">
-              <div class="timeline__card">
-                <div class="timeline__top">
-                  <div>
-                    <h3 class="timeline__title">Front-end Web Developer</h3>
-                    <span class="timeline__org">
-                      <i class="uil uil-building" aria-hidden="true"></i>
-                      Vrit Technologies
-                    </span>
-                  </div>
-                  <span class="timeline__date">
-                    <i class="uil uil-calendar-alt" aria-hidden="true"></i>
-                    May 2026 — Present
-                  </span>
-                </div>
-                <ul class="timeline__list">
-                  <li>
-                    Developed and maintained a SaaS CRM platform using React.js
-                    and TypeScript, building scalable, reusable and responsive
-                    user interfaces.
-                  </li>
-                  <li>
-                    Collaborated with designers and backend developers to
-                    deliver new CRM features and integrate RESTful APIs into
-                    production-ready applications.
-                  </li>
-                  <li>
-                    Optimized application performance, resolved bugs and
-                    followed React best practices to ensure a high-quality user
-                    experience.
-                  </li>
-                </ul>
-                <div class="timeline__tags">
-                  <span class="tag">React.js</span>
-                  <span class="tag">TypeScript</span>
-                  <span class="tag">REST APIs</span>
-                  <span class="tag">SaaS CRM</span>
-                </div>
+          <ol class="jobs">
+            <li class="job reveal">
+              <span class="job__date">May 2026 — Present</span>
+              <div>
+                <h3 class="job__role display">Front-end Web Developer</h3>
+                <span class="job__org">Vrit Technologies</span>
               </div>
-            </article>
-
-            <!-- IT Bridge Nepal — Developer -->
-            <article class="timeline__item reveal">
-              <div class="timeline__card">
-                <div class="timeline__top">
-                  <div>
-                    <h3 class="timeline__title">Front-end Web Developer</h3>
-                    <span class="timeline__org">
-                      <i class="uil uil-building" aria-hidden="true"></i>
-                      IT Bridge Nepal
-                    </span>
-                  </div>
-                  <span class="timeline__date">
-                    <i class="uil uil-calendar-alt" aria-hidden="true"></i>
-                    Apr 2024 — May 2026
-                  </span>
-                </div>
-                <ul class="timeline__list">
-                  <li>
-                    Developed server-side rendered and static web applications
-                    using Next.js and React.js, improving performance and SEO.
-                  </li>
-                  <li>
-                    Collaborated with design and backend teams to convert UI
-                    concepts into functional web applications.
-                  </li>
-                  <li>
-                    Mentored interns and junior developers on React best
-                    practices.
-                  </li>
-                </ul>
-                <div class="timeline__tags">
-                  <span class="tag">Next.js</span>
-                  <span class="tag">React.js</span>
-                  <span class="tag">Tailwind CSS</span>
-                  <span class="tag">Ant Design</span>
-                  <span class="tag">SEO</span>
-                </div>
+              <ul class="job__points">
+                <li>Developed and maintained a SaaS CRM platform using React.js and TypeScript, building scalable, reusable and responsive user interfaces.</li>
+                <li>Collaborated with designers and backend developers to deliver new CRM features and integrate RESTful APIs into production-ready applications.</li>
+                <li>Optimized application performance, resolved bugs and followed React best practices to ensure a high-quality user experience.</li>
+              </ul>
+            </li>
+            <li class="job reveal">
+              <span class="job__date">Apr 2024 — May 2026</span>
+              <div>
+                <h3 class="job__role display">Front-end Web Developer</h3>
+                <span class="job__org">IT Bridge Nepal</span>
               </div>
-            </article>
-
-            <!-- IT Bridge Nepal — Intern -->
-            <article class="timeline__item reveal">
-              <div class="timeline__card">
-                <div class="timeline__top">
-                  <div>
-                    <h3 class="timeline__title">Front-end Intern</h3>
-                    <span class="timeline__org">
-                      <i class="uil uil-building" aria-hidden="true"></i>
-                      IT Bridge Nepal
-                    </span>
-                  </div>
-                  <span class="timeline__date">
-                    <i class="uil uil-calendar-alt" aria-hidden="true"></i>
-                    Jan 2024 — Mar 2024
-                  </span>
-                </div>
-                <ul class="timeline__list">
-                  <li>
-                    Built responsive and interactive UI components to enhance
-                    user experience.
-                  </li>
-                  <li>
-                    Debugged and optimized front-end code for better
-                    performance.
-                  </li>
-                  <li>Assisted in developing multiple React-based projects.</li>
-                </ul>
-                <div class="timeline__tags">
-                  <span class="tag">React.js</span>
-                  <span class="tag">JavaScript</span>
-                  <span class="tag">Bootstrap</span>
-                </div>
+              <ul class="job__points">
+                <li>Developed server-side rendered and static web applications using Next.js and React.js, improving performance and SEO.</li>
+                <li>Collaborated with design and backend teams to convert UI concepts into functional web applications.</li>
+                <li>Mentored interns and junior developers on React best practices.</li>
+              </ul>
+            </li>
+            <li class="job reveal">
+              <span class="job__date">Jan 2024 — Mar 2024</span>
+              <div>
+                <h3 class="job__role display">Front-end Intern</h3>
+                <span class="job__org">IT Bridge Nepal</span>
               </div>
-            </article>
-          </div>
+              <ul class="job__points">
+                <li>Built responsive and interactive UI components to enhance user experience.</li>
+                <li>Debugged and optimized front-end code for better performance.</li>
+                <li>Assisted in developing multiple React-based projects.</li>
+              </ul>
+            </li>
+          </ol>
         </div>
       </section>
 
       <!--==================== PROJECTS ====================-->
-      <section class="projects section section--tinted" id="projects">
+      <section class="projects section theme-light" id="projects" data-nav="light">
         <div class="container">
-          <div class="section__header reveal">
-            <span class="section__eyebrow">Work</span>
-            <h2 class="section__title">Selected Projects</h2>
-            <span class="section__subtitle"
-              >Platforms and products I've led or contributed to across frontend
-              and backend teams.</span
-            >
+          <div class="center-head">
+            <h2 class="bracket reveal">[ Projects ]</h2>
+            <p class="display center-head__sub reveal">
+              Turning product ideas into<br />working software.
+            </p>
           </div>
 
-          <div class="projects__container grid">
-            <!-- Chairlyo -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <div class="project__cover" aria-hidden="true">
-                  <i class="uil uil-schedule"></i>
-                  <span class="project__cover-label">Chairlyo</span>
-                </div>
-              </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Front-end Lead</span>
-                  <span class="project__role">Salon &amp; Spa SaaS</span>
-                </div>
-                <h3 class="project__title">Chairlyo — Salon Management</h3>
-                <p class="project__description">
-                  Scalable frontend modules for a salon and spa management
-                  platform. Worked closely with the Django backend team on
-                  secure API integrations, authentication, scheduling, POS and
-                  analytics.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">React</span>
-                  <span class="tag">TypeScript</span>
-                  <span class="tag">Vite</span>
-                  <span class="tag">Tailwind CSS</span>
-                  <span class="tag">Django API</span>
-                </div>
-              </div>
-            </article>
+          <div class="orbit reveal" id="orbit" tabindex="0" aria-roledescription="carousel" aria-label="Projects">
+            <p class="orbit__count" aria-hidden="true">
+              <span id="orbit-current">01</span> / <span id="orbit-total">08</span>
+            </p>
 
-            <!-- Employee Screening -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <div class="project__cover" aria-hidden="true">
-                  <i class="uil uil-clipboard-notes"></i>
-                  <span class="project__cover-label">Employee Screening</span>
-                </div>
-              </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Front-end Lead</span>
-                  <span class="project__role">HR Platform</span>
-                </div>
-                <h3 class="project__title">Employee Screening Platform</h3>
-                <p class="project__description">
-                  A screening platform built with Next.js and shadcn/ui featuring
-                  role-based access and protected routes, Laravel API
-                  integration for candidate management, optimized data fetching
-                  and SSR-safe dashboards.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">Next.js</span>
-                  <span class="tag">TypeScript</span>
-                  <span class="tag">shadcn/ui</span>
-                  <span class="tag">Laravel API</span>
-                  <span class="tag">RBAC</span>
-                </div>
-              </div>
-            </article>
+            <!-- Fanned cards; JS positions them around the active one. -->
+            <div class="orbit__stage" aria-hidden="true">
+              <div class="orbit__card"><img src="assets/img/project-chairlyo.jpg" alt="" loading="lazy" /></div>
+              <div class="orbit__card"><div class="cover cover--ink"><i class="uil uil-clipboard-notes"></i><span>Employee Screening</span></div></div>
+              <div class="orbit__card"><img src="assets/img/image1.png" alt="" loading="lazy" /></div>
+              <div class="orbit__card"><img src="assets/img/project-ats.jpg" alt="" loading="lazy" /></div>
+              <div class="orbit__card"><img src="assets/img/image4.png" alt="" loading="lazy" /></div>
+              <div class="orbit__card"><img src="assets/img/image2.png" alt="" loading="lazy" /></div>
+              <div class="orbit__card"><img src="assets/img/image3.png" alt="" loading="lazy" /></div>
+              <div class="orbit__card"><img src="assets/img/project-voting.jpg" alt="" loading="lazy" /></div>
+            </div>
 
-            <!-- Job Recommendation System -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <img
-                  src="assets/img/image1.png"
-                  alt="Job Recommendation System landing page"
-                  class="project__img"
-                  loading="lazy"
-                />
-                <div class="project__overlay">
-                  <div class="project__links">
-                    <a
-                      href="https://connect-pro-umber.vercel.app/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="project__link"
-                      aria-label="View Job Recommendation System live demo"
-                    >
-                      <i class="uil uil-eye" aria-hidden="true"></i>
-                    </a>
-                    <a
-                      href="https://github.com/milansap/connect-pro"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="project__link"
-                      aria-label="View Job Recommendation System source code"
-                    >
-                      <i class="uil uil-github-alt" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
+            <div class="orbit__info">
+              <div class="orbit__details" aria-live="polite">
+                <article class="orbit__item is-active">
+                  <h3 class="orbit__title">Chairlyo — Salon Management</h3>
+                  <p>Scalable frontend modules for a salon and spa management platform. Worked closely with the Django backend team on secure API integrations, authentication, scheduling, POS and analytics.</p>
+                  <p class="orbit__tags">Front-end Lead · React · TypeScript · Vite · Tailwind · Django API</p>
+                  <p class="orbit__links">
+                    <a href="https://chairlyo.com/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                  </p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">Employee Screening Platform</h3>
+                  <p>A screening platform built with Next.js and shadcn/ui featuring role-based access and protected routes, Laravel API integration for candidate management and SSR-safe dashboards.</p>
+                  <p class="orbit__tags">Front-end Lead · Next.js · TypeScript · shadcn/ui · Laravel API</p>
+                  <p class="orbit__links">
+                    <a href="https://screening.fleexii.com/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                  </p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">Job Recommendation System</h3>
+                  <p>A skill-based job matching system where candidates are ranked against openings. Built the frontend and collaborated with the Python/Flask ML team to improve recommendation accuracy.</p>
+                  <p class="orbit__tags">Front-end Lead · React · Ant Design · Zustand · Flask</p>
+                  <p class="orbit__links">
+                    <a href="https://connect-pro-umber.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo ↗</a>
+                    <a href="https://github.com/milansap/connect-pro" target="_blank" rel="noopener noreferrer">Source ↗</a>
+                  </p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">Applicant Tracking System</h3>
+                  <p>A multi-tenant SaaS ATS built with Node.js, Express and Prisma — REST API modules for job posting, hiring pipelines, interview scheduling and offers, with JWT auth and RBAC.</p>
+                  <p class="orbit__tags">Backend Support · Node.js · Express · Prisma · MySQL</p>
+                  <p class="orbit__links">
+                    <a href="https://ats.fleexii.co.uk/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                  </p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">Finman — Finance Management</h3>
+                  <p>A finance management application for tracking income, expenses and budgets. Integrated secure APIs and implemented real-time chat over WebSocket.</p>
+                  <p class="orbit__tags">Front-end Support · React · Ant Design · WebSocket</p>
+                  <p class="orbit__links">
+                    <a href="http://weblinxits.com" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                  </p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">Family Tree Visualiser</h3>
+                  <p>An interactive family tree that renders complex relationships as a navigable hierarchy with React and D3.js, backed by a .NET + SQL Server API.</p>
+                  <p class="orbit__tags">Front-end Lead · React · D3.js · .NET · SQL Server</p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">IT Bridge Nepal Website</h3>
+                  <p>A responsive corporate website built with React, Tailwind CSS and Ant Design, with smooth section-level animations in Framer Motion.</p>
+                  <p class="orbit__tags">Front-end Lead · React · Tailwind · Framer Motion</p>
+                  <p class="orbit__links">
+                    <a href="https://itbridge.com.np/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                  </p>
+                </article>
+                <article class="orbit__item">
+                  <h3 class="orbit__title">Online Voting Platform</h3>
+                  <p>A secure voting platform on the MERN stack with JWT authentication, role-based access, real-time vote counting and REST APIs for elections, candidates and results.</p>
+                  <p class="orbit__tags">MERN Lead · MongoDB · Express · React · Node.js</p>
+                  <p class="orbit__links">
+                    <a href="https://voting-node-js.vercel.app/" target="_blank" rel="noopener noreferrer">Live site ↗</a>
+                  </p>
+                </article>
               </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Front-end Lead</span>
-                  <span class="project__role">ML-backed matching</span>
-                </div>
-                <h3 class="project__title">Job Recommendation System</h3>
-                <p class="project__description">
-                  A skill-based job matching system where candidates are ranked
-                  against openings. Built the frontend and collaborated with the
-                  Python/Flask ML team to improve recommendation accuracy.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">React</span>
-                  <span class="tag">Ant Design</span>
-                  <span class="tag">Tailwind</span>
-                  <span class="tag">Zustand</span>
-                  <span class="tag">Flask</span>
-                </div>
-              </div>
-            </article>
 
-            <!-- Multi-Tenant ATS -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <div class="project__cover" aria-hidden="true">
-                  <i class="uil uil-users-alt"></i>
-                  <span class="project__cover-label">Multi-Tenant ATS</span>
-                </div>
+              <div class="orbit__nav">
+                <button class="square-btn" id="orbit-prev" aria-label="Previous project"><i class="uil uil-arrow-left" aria-hidden="true"></i></button>
+                <button class="square-btn" id="orbit-next" aria-label="Next project"><i class="uil uil-arrow-right" aria-hidden="true"></i></button>
               </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Backend Support</span>
-                  <span class="project__role">Multi-tenant SaaS</span>
-                </div>
-                <h3 class="project__title">Applicant Tracking System</h3>
-                <p class="project__description">
-                  A multi-tenant SaaS ATS built with Node.js, Express and Prisma.
-                  Built REST API modules covering job posting, hiring pipelines,
-                  interview scheduling and offer management with JWT auth and
-                  role-based access control.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">Node.js</span>
-                  <span class="tag">Express</span>
-                  <span class="tag">TypeScript</span>
-                  <span class="tag">Prisma</span>
-                  <span class="tag">MySQL</span>
-                </div>
-              </div>
-            </article>
+            </div>
+          </div>
 
-            <!-- Finman -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <img
-                  src="assets/img/image4.png"
-                  alt="Finman finance management dashboard"
-                  class="project__img"
-                  loading="lazy"
-                />
-                <div class="project__overlay">
-                  <div class="project__links">
-                    <a
-                      href="http://weblinxits.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="project__link"
-                      aria-label="View Finman live site"
-                    >
-                      <i class="uil uil-eye" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Front-end Support</span>
-                  <span class="project__role">Fintech</span>
-                </div>
-                <h3 class="project__title">Finman — Finance Management</h3>
-                <p class="project__description">
-                  A finance management application for tracking income, expenses
-                  and budgets. Integrated secure APIs and implemented real-time
-                  chat over WebSocket for instant user communication.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">React 16</span>
-                  <span class="tag">Ant Design</span>
-                  <span class="tag">Bootstrap</span>
-                  <span class="tag">WebSocket</span>
-                </div>
-              </div>
-            </article>
-
-            <!-- Family Tree -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <img
-                  src="assets/img/image2.png"
-                  alt="Interactive family tree visualisation"
-                  class="project__img"
-                  loading="lazy"
-                />
-              </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Front-end Lead</span>
-                  <span class="project__role">Data visualisation</span>
-                </div>
-                <h3 class="project__title">Family Tree Visualiser</h3>
-                <p class="project__description">
-                  An interactive family tree that renders complex relationships
-                  as a navigable hierarchy with React and D3.js, backed by a
-                  .NET + SQL Server API for real-time updates and persistent
-                  storage.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">React</span>
-                  <span class="tag">D3.js</span>
-                  <span class="tag">.NET</span>
-                  <span class="tag">SQL Server</span>
-                </div>
-              </div>
-            </article>
-
-            <!-- Company Website -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <img
-                  src="assets/img/image3.png"
-                  alt="IT Bridge Nepal company website"
-                  class="project__img"
-                  loading="lazy"
-                />
-                <div class="project__overlay">
-                  <div class="project__links">
-                    <a
-                      href="https://itbridge.com.np/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="project__link"
-                      aria-label="View IT Bridge Nepal website"
-                    >
-                      <i class="uil uil-eye" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">Front-end Lead</span>
-                  <span class="project__role">Marketing site</span>
-                </div>
-                <h3 class="project__title">Official Company Website</h3>
-                <p class="project__description">
-                  A responsive corporate website built with React, Tailwind CSS
-                  and Ant Design, with smooth section-level UI animations
-                  implemented in Framer Motion.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">React</span>
-                  <span class="tag">Tailwind CSS</span>
-                  <span class="tag">Ant Design</span>
-                  <span class="tag">Framer Motion</span>
-                </div>
-              </div>
-            </article>
-
-            <!-- Voting App -->
-            <article class="project__card reveal">
-              <div class="project__image">
-                <div class="project__cover" aria-hidden="true">
-                  <i class="uil uil-check-square"></i>
-                  <span class="project__cover-label">Voting App</span>
-                </div>
-              </div>
-              <div class="project__content">
-                <div class="project__meta">
-                  <span class="badge badge--accent">MERN Lead</span>
-                  <span class="project__role">Full stack</span>
-                </div>
-                <h3 class="project__title">Online Voting Platform</h3>
-                <p class="project__description">
-                  A secure, responsive voting platform on the MERN stack.
-                  Implemented JWT authentication, role-based access control,
-                  real-time vote counting and REST APIs for elections,
-                  candidates, voters and results.
-                </p>
-                <div class="project__tech">
-                  <span class="tag">MongoDB</span>
-                  <span class="tag">Express.js</span>
-                  <span class="tag">React</span>
-                  <span class="tag">Node.js</span>
-                  <span class="tag">Tailwind CSS</span>
-                </div>
-              </div>
-            </article>
+          <div class="center-cta reveal">
+            <a href="#contact" class="pill pill--blue">
+              <span class="pill__roll"><span>Start a project</span></span>
+            </a>
           </div>
         </div>
       </section>
 
-      <!--==================== SKILLS ====================-->
-      <section class="skills section" id="skills">
+      <!--==================== SKILLS & EDUCATION ====================-->
+      <section class="skills section theme-light" id="skills" data-nav="light">
         <div class="container">
-          <div class="section__header reveal">
-            <span class="section__eyebrow">Stack</span>
-            <h2 class="section__title">Technical Skills</h2>
-            <span class="section__subtitle"
-              >The tools I reach for when building and shipping web
-              applications.</span
-            >
+          <h2 class="display skills__title reveal">Skills &amp;<br />education</h2>
+          <p class="skills__lede reveal">
+            The tools I reach for when building and shipping web applications —
+            and the degree behind them.
+          </p>
+
+          <div class="skills__grid">
+            <div class="skill-col reveal">
+              <h3>Frontend</h3>
+              <ul>
+                <li>React</li><li>Next.js</li><li>TypeScript</li><li>JavaScript</li>
+                <li>HTML &amp; CSS</li><li>Tailwind CSS</li><li>Bootstrap</li>
+                <li>Ant Design</li><li>shadcn/ui</li>
+              </ul>
+            </div>
+            <div class="skill-col reveal">
+              <h3>Backend &amp; APIs</h3>
+              <ul>
+                <li>Node.js</li><li>Express</li><li>Prisma ORM</li>
+                <li>REST APIs</li><li>WebSocket</li><li>JWT Auth</li>
+              </ul>
+            </div>
+            <div class="skill-col reveal">
+              <h3>Databases</h3>
+              <ul><li>MongoDB</li><li>MySQL</li><li>PostgreSQL</li></ul>
+            </div>
+            <div class="skill-col reveal">
+              <h3>Tools</h3>
+              <ul>
+                <li>Git &amp; GitHub</li><li>VS Code</li><li>Postman</li><li>Figma</li>
+                <li>Vite</li><li>Responsive design</li><li>SEO optimization</li>
+              </ul>
+            </div>
           </div>
 
-          <div class="skills__container grid">
-            <article class="skills__card reveal">
-              <div class="skills__header">
-                <span class="skills__icon" aria-hidden="true">
-                  <i class="uil uil-brackets-curly"></i>
-                </span>
-                <div>
-                  <h3 class="skills__title">Frontend</h3>
-                  <span class="skills__count">10 technologies</span>
-                </div>
-              </div>
-              <div class="skills__list">
-                <span class="tag">React</span>
-                <span class="tag">Next.js</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">JavaScript</span>
-                <span class="tag">HTML</span>
-                <span class="tag">CSS</span>
-                <span class="tag">Tailwind CSS</span>
-                <span class="tag">Bootstrap</span>
-                <span class="tag">Ant Design</span>
-                <span class="tag">shadcn/ui</span>
-              </div>
-            </article>
-
-            <article class="skills__card reveal">
-              <div class="skills__header">
-                <span class="skills__icon" aria-hidden="true">
-                  <i class="uil uil-server-network"></i>
-                </span>
-                <div>
-                  <h3 class="skills__title">Backend &amp; APIs</h3>
-                  <span class="skills__count">6 technologies</span>
-                </div>
-              </div>
-              <div class="skills__list">
-                <span class="tag">Node.js</span>
-                <span class="tag">Express</span>
-                <span class="tag">Prisma ORM</span>
-                <span class="tag">REST APIs</span>
-                <span class="tag">WebSocket</span>
-                <span class="tag">JWT Auth</span>
-              </div>
-            </article>
-
-            <article class="skills__card reveal">
-              <div class="skills__header">
-                <span class="skills__icon" aria-hidden="true">
-                  <i class="uil uil-database"></i>
-                </span>
-                <div>
-                  <h3 class="skills__title">Databases</h3>
-                  <span class="skills__count">3 technologies</span>
-                </div>
-              </div>
-              <div class="skills__list">
-                <span class="tag">MongoDB</span>
-                <span class="tag">MySQL</span>
-                <span class="tag">PostgreSQL</span>
-              </div>
-            </article>
-
-            <article class="skills__card reveal">
-              <div class="skills__header">
-                <span class="skills__icon" aria-hidden="true">
-                  <i class="uil uil-wrench"></i>
-                </span>
-                <div>
-                  <h3 class="skills__title">Tools &amp; Practices</h3>
-                  <span class="skills__count">8 essentials</span>
-                </div>
-              </div>
-              <div class="skills__list">
-                <span class="tag">Git</span>
-                <span class="tag">GitHub</span>
-                <span class="tag">VS Code</span>
-                <span class="tag">Postman</span>
-                <span class="tag">Figma</span>
-                <span class="tag">Vite</span>
-                <span class="tag">Responsive Design</span>
-                <span class="tag">SEO Optimization</span>
-              </div>
-            </article>
-          </div>
-
-          <!--==================== EDUCATION ====================-->
-          <div id="qualification" class="section__header reveal" style="margin-top: 4rem">
-            <span class="section__eyebrow">Education</span>
-            <h2 class="section__title">Academic Background</h2>
-          </div>
-
-          <div class="timeline">
-            <article class="timeline__item reveal">
-              <div class="timeline__card">
-                <div class="timeline__top">
-                  <div>
-                    <h3 class="timeline__title">
-                      Bachelor of Computer Science and Information Technology
-                    </h3>
-                    <span class="timeline__org">
-                      <i class="uil uil-graduation-cap" aria-hidden="true"></i>
-                      Tribhuvan University
-                    </span>
-                  </div>
-                  <span class="timeline__date">
-                    <i class="uil uil-calendar-alt" aria-hidden="true"></i>
-                    2020 — 2025
-                  </span>
-                </div>
-                <ul class="timeline__list">
-                  <li>
-                    Four-year undergraduate program covering data structures and
-                    algorithms, database management systems, operating systems
-                    and computer architecture.
-                  </li>
-                  <li>
-                    Advanced coursework in artificial intelligence, design and
-                    analysis of algorithms, and web technologies.
-                  </li>
-                </ul>
-                <div class="timeline__tags">
-                  <span class="tag">Algorithms</span>
-                  <span class="tag">DBMS</span>
-                  <span class="tag">Operating Systems</span>
-                  <span class="tag">Web Technologies</span>
-                </div>
-              </div>
-            </article>
+          <div class="edu reveal" id="qualification">
+            <span class="edu__years">2020 — 2025</span>
+            <div>
+              <h3 class="display edu__title">BSc. Computer Science &amp; IT</h3>
+              <span class="job__org">Tribhuvan University</span>
+            </div>
+            <p class="edu__text">
+              Data structures and algorithms, DBMS, operating systems and
+              computer architecture — plus advanced coursework in artificial
+              intelligence, algorithm design and web technologies.
+            </p>
           </div>
         </div>
       </section>
 
       <!--==================== CONTACT ====================-->
-      <section class="contact section section--tinted" id="contact">
-        <div class="container">
-          <div class="section__header reveal">
-            <span class="section__eyebrow">Contact</span>
-            <h2 class="section__title">Let's build something</h2>
-            <span class="section__subtitle"
-              >Open to frontend roles, freelance projects and collaborations.
-              I'll usually reply within a day.</span
-            >
+      <section class="contact theme-dark" id="contact" data-nav="dark">
+        <div class="contact__hero">
+          <!-- "Contact" in other languages drifting around the heading -->
+          <ul class="contact__words" aria-hidden="true">
+            <li style="--x: 4%; --y: 8%; --s: 2.4; --d: 0s">Contacto</li>
+            <li style="--x: 62%; --y: 6%; --s: 2; --d: -3s">Contactez</li>
+            <li style="--x: 82%; --y: 16%; --s: 1.6; --d: -6s">Kontakt</li>
+            <li style="--x: 14%; --y: 22%; --s: 1.4; --d: -2s">Contatto</li>
+            <li style="--x: 72%; --y: 26%; --s: 1.8; --d: -8s">Επικοινωνία</li>
+            <li style="--x: 3%; --y: 74%; --s: 2.6; --d: -4s">सम्पर्क</li>
+            <li style="--x: 30%; --y: 84%; --s: 2; --d: -7s">연락</li>
+            <li style="--x: 80%; --y: 78%; --s: 2.2; --d: -1s">連絡</li>
+            <li style="--x: 60%; --y: 92%; --s: 1.5; --d: -5s">संपर्क</li>
+            <li style="--x: 6%; --y: 94%; --s: 2.2; --d: -9s">Contact</li>
+          </ul>
+
+          <div class="contact__center">
+            <h2 class="display contact__title reveal">Contact</h2>
+            <p class="contact__text reveal">
+              Got a role or a project in mind? I'd love to hear about it. Tell
+              me what you need and I'll reply within a day.
+            </p>
+            <div class="contact__ctas reveal">
+              <a href="mailto:sp.milan04@gmail.com" class="pill pill--light">
+                <span class="pill__roll"><span>Email me</span></span>
+              </a>
+              <a href="#contactForm" class="pill pill--blue">
+                <span class="pill__roll"><span>Send a message</span></span>
+              </a>
+            </div>
           </div>
+        </div>
 
-          <div class="contact__container grid">
-            <div class="reveal">
-              <div class="contact__cards">
-                <div class="contact__information">
-                  <span class="contact__icon" aria-hidden="true">
-                    <i class="uil uil-phone"></i>
-                  </span>
-                  <div>
-                    <h3 class="contact__title">Phone</h3>
-                    <a href="tel:+9779861449329" class="contact__subtitle"
-                      >+977 9861449329</a
-                    >
-                  </div>
-                </div>
-
-                <div class="contact__information">
-                  <span class="contact__icon" aria-hidden="true">
-                    <i class="uil uil-envelope"></i>
-                  </span>
-                  <div>
-                    <h3 class="contact__title">Email</h3>
-                    <a
-                      href="mailto:sp.milan04@gmail.com"
-                      class="contact__subtitle"
-                      >sp.milan04@gmail.com</a
-                    >
-                  </div>
-                </div>
-
-                <div class="contact__information">
-                  <span class="contact__icon" aria-hidden="true">
-                    <i class="uil uil-map-marker"></i>
-                  </span>
-                  <div>
-                    <h3 class="contact__title">Location</h3>
-                    <span class="contact__subtitle">Panauti, Kavre, Nepal</span>
-                  </div>
-                </div>
-
-                <div class="contact__information">
-                  <span class="contact__icon" aria-hidden="true">
-                    <i class="uil uil-globe"></i>
-                  </span>
-                  <div>
-                    <h3 class="contact__title">Website</h3>
-                    <a
-                      href="https://www.sapkotamilan.com.np/"
-                      class="contact__subtitle"
-                      >sapkotamilan.com.np</a
-                    >
-                  </div>
-                </div>
+        <div class="container contact__form-wrap">
+          <form id="contactForm" class="form reveal" novalidate>
+            <div class="form__row">
+              <div class="field">
+                <label for="nameInput">Name</label>
+                <input id="nameInput" name="user_name" type="text" placeholder="Your name" autocomplete="name" required />
               </div>
-
-              <div class="contact__socials">
-                <a
-                  href="https://www.linkedin.com/in/milan-sapkota-564294228/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="home__social-icon"
-                  aria-label="LinkedIn profile"
-                >
-                  <i class="uil uil-linkedin-alt" aria-hidden="true"></i>
-                </a>
-                <a
-                  href="https://github.com/milansap"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="home__social-icon"
-                  aria-label="GitHub profile"
-                >
-                  <i class="uil uil-github-alt" aria-hidden="true"></i>
-                </a>
-                <a
-                  href="https://www.instagram.com/milley.04/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="home__social-icon"
-                  aria-label="Instagram profile"
-                >
-                  <i class="uil uil-instagram" aria-hidden="true"></i>
-                </a>
+              <div class="field">
+                <label for="userEmailInput">Email</label>
+                <input id="userEmailInput" name="user_email" type="email" placeholder="you@company.com" autocomplete="email" required />
               </div>
             </div>
+            <div class="field">
+              <label for="subjectInput">Subject</label>
+              <input id="subjectInput" name="subject" type="text" placeholder="What is this about?" />
+            </div>
+            <div class="field">
+              <label for="bodyInput">Message</label>
+              <textarea id="bodyInput" name="message" rows="5" placeholder="Tell me about the role or project…" required></textarea>
+            </div>
 
-            <form id="contactForm" class="contact__form grid reveal" novalidate>
-              <div class="contact__inputs grid">
-                <div class="contact__content">
-                  <label for="nameInput" class="content__label">Name</label>
-                  <input
-                    id="nameInput"
-                    name="user_name"
-                    type="text"
-                    class="contact__input"
-                    placeholder="Your name"
-                    autocomplete="name"
-                    required
-                  />
-                </div>
+            <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
 
-                <div class="contact__content">
-                  <label for="userEmailInput" class="content__label">Email</label>
-                  <input
-                    id="userEmailInput"
-                    name="user_email"
-                    type="email"
-                    class="contact__input"
-                    placeholder="you@company.com"
-                    autocomplete="email"
-                    required
-                  />
-                </div>
-
-                <div class="contact__content contact__content--full">
-                  <label for="subjectInput" class="content__label">Subject</label>
-                  <input
-                    id="subjectInput"
-                    name="subject"
-                    type="text"
-                    class="contact__input"
-                    placeholder="What is this about?"
-                  />
-                </div>
-              </div>
-
-              <div class="contact__content">
-                <label for="bodyInput" class="content__label">Message</label>
-                <textarea
-                  id="bodyInput"
-                  name="message"
-                  rows="6"
-                  class="contact__input"
-                  placeholder="Tell me about the role or project…"
-                  required
-                ></textarea>
-              </div>
-
-              <p
-                class="form__status"
-                id="formStatus"
-                role="status"
-                aria-live="polite"
-              ></p>
-
-              <div>
-                <button type="submit" class="button" id="submitButton">
-                  <span class="button__label">Send Message</span>
-                  <i class="uil uil-message button__icon" aria-hidden="true"></i>
-                </button>
-              </div>
-
-              <p class="contact__note">
-                Prefer email? Reach me directly at
-                <a href="mailto:sp.milan04@gmail.com" class="text-accent"
-                  >sp.milan04@gmail.com</a
-                >.
-              </p>
-            </form>
-          </div>
+            <button type="submit" class="pill pill--light pill--big" id="submitButton">
+              <span class="pill__roll"><span class="button__label">Send Message</span></span>
+            </button>
+          </form>
         </div>
       </section>
     </main>
 
     <!--==================== FOOTER ====================-->
-    <footer class="footer">
+    <footer class="footer theme-dark" data-nav="dark">
       <div class="container">
-        <div class="footer__container grid">
+        <div class="footer__cols">
           <div>
-            <h2 class="footer__title">
-              <span class="nav__logo-mark" aria-hidden="true">MS</span>
-              Milan Sapkota
-            </h2>
-            <span class="footer__subtitle">
-              Frontend Developer building scalable, responsive interfaces with
-              React, Next.js and TypeScript.
-            </span>
+            <p class="footer__label">[ Socials ]</p>
+            <ul>
+              <li><a href="https://www.linkedin.com/in/milan-sapkota-564294228/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+              <li><a href="https://github.com/milansap" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+              <li><a href="https://www.instagram.com/milley.04/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            </ul>
           </div>
-
           <nav aria-label="Footer">
-            <h3 class="footer__heading">Explore</h3>
-            <ul class="footer__links">
-              <li><a href="#about" class="footer__link">About</a></li>
-              <li><a href="#experience" class="footer__link">Experience</a></li>
-              <li><a href="#projects" class="footer__link">Projects</a></li>
-              <li><a href="#skills" class="footer__link">Skills</a></li>
-              <li>
-                <a href="#qualification" class="footer__link">Education</a>
-              </li>
-              <li><a href="#contact" class="footer__link">Contact</a></li>
+            <p class="footer__label">[ Nav ]</p>
+            <ul>
+              <li><a href="#about">About</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#projects">Projects</a></li>
+              <li><a href="#qualification">Education</a></li>
             </ul>
           </nav>
-
           <div>
-            <h3 class="footer__heading">Elsewhere</h3>
-            <div class="footer__socials">
-              <a
-                href="https://www.linkedin.com/in/milan-sapkota-564294228/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="footer__social"
-                aria-label="LinkedIn profile"
-              >
-                <i class="uil uil-linkedin-alt" aria-hidden="true"></i>
-              </a>
-              <a
-                href="https://github.com/milansap"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="footer__social"
-                aria-label="GitHub profile"
-              >
-                <i class="uil uil-github-alt" aria-hidden="true"></i>
-              </a>
-              <a
-                href="https://www.instagram.com/milley.04/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="footer__social"
-                aria-label="Instagram profile"
-              >
-                <i class="uil uil-instagram" aria-hidden="true"></i>
-              </a>
-              <a
-                href="mailto:sp.milan04@gmail.com"
-                class="footer__social"
-                aria-label="Send an email"
-              >
-                <i class="uil uil-envelope" aria-hidden="true"></i>
-              </a>
-            </div>
+            <p class="footer__label">[ Contact ]</p>
+            <ul>
+              <li><a href="mailto:sp.milan04@gmail.com">sp.milan04@gmail.com</a></li>
+              <li><a href="tel:+9779861449329">+977 9861449329</a></li>
+            </ul>
           </div>
         </div>
 
+        <p class="footer__mark" aria-hidden="true">
+          <span class="fit" id="footer-name">Milan <span class="hero__br">[</span>Sapkota<span class="hero__br">]</span></span>
+        </p>
+
         <div class="footer__bottom">
-          <p class="footer__copy">
-            &copy; <span id="footer-year">2026</span> Milan Sapkota. All rights
-            reserved.
-          </p>
-          <p class="footer__built">Built with HTML, CSS &amp; JavaScript</p>
+          <p>Small details, big impact</p>
+          <p>&copy; <span id="footer-year">2026</span>, Milan Sapkota</p>
         </div>
       </div>
     </footer>
-
-    <!--==================== SCROLL TOP ====================-->
-    <a href="#home" class="scrollup" id="scroll-up" aria-label="Back to top">
-      <i class="uil uil-arrow-up" aria-hidden="true"></i>
-    </a>
 
     <script src="assets/ptj.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>

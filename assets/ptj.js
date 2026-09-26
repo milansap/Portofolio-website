@@ -1,132 +1,129 @@
 /*=====================================================================
   Milan Sapkota — Portfolio interactions
-  Navigation, theme, scroll-spy, scroll progress and reveal animations.
+  Intro loader, fit-to-width type, header, menu, the blue wipe, reveals,
+  counters and the projects carousel.
 =====================================================================*/
 (function () {
   "use strict";
 
-  /*==================== MOBILE NAVIGATION ====================*/
-  const navMenu = document.getElementById("nav-menu");
+  const root = document.documentElement;
+  const body = document.body;
+  const reduceMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /*==================== FIT TEXT ====================*/
+  // Size .fit elements so they span their container's content width exactly.
+  const fitEls = Array.from(document.querySelectorAll(".fit"));
+
+  function fitAll() {
+    fitEls.forEach((el) => {
+      const box = el.parentElement;
+      const style = getComputedStyle(box);
+      const available =
+        box.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      el.style.fontSize = "100px";
+      const natural = el.scrollWidth;
+      if (natural > 0) el.style.fontSize = (100 * available) / natural + "px";
+    });
+  }
+
+  fitAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+  window.addEventListener("resize", fitAll);
+
+  /*==================== INTRO LOADER ====================*/
+  const loader = document.getElementById("loader");
+  let introDone = false;
+
+  function finishIntro() {
+    if (introDone) return;
+    introDone = true;
+    root.classList.add("is-ready");
+    if (loader) setTimeout(() => (loader.style.display = "none"), 1200);
+  }
+
+  // Only play the intro once per browser session.
+  let seenIntro = false;
+  try {
+    seenIntro = sessionStorage.getItem("intro-seen") === "1";
+    sessionStorage.setItem("intro-seen", "1");
+  } catch (e) {
+    /* storage blocked — just play it */
+  }
+
+  if (!loader || reduceMotion || seenIntro) {
+    if (loader) loader.style.display = "none";
+    requestAnimationFrame(finishIntro);
+  } else {
+    // The signature draws itself in CSS; lift the curtain once it has filled.
+    setTimeout(finishIntro, 2300);
+  }
+
+  /*==================== MENU ====================*/
+  const menu = document.getElementById("menu");
   const navToggle = document.getElementById("nav-toggle");
-  const navClose = document.getElementById("nav-close");
-  const navBackdrop = document.getElementById("nav-backdrop");
 
-  function openMenu() {
-    if (!navMenu) return;
-    navMenu.classList.add("show-menu");
-    if (navToggle) navToggle.setAttribute("aria-expanded", "true");
-    if (navBackdrop) {
-      navBackdrop.hidden = false;
-      requestAnimationFrame(() => navBackdrop.classList.add("is-open"));
+  function setMenu(open) {
+    body.classList.toggle("menu-open", open);
+    if (navToggle) {
+      navToggle.setAttribute("aria-expanded", String(open));
+      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     }
+    if (menu) menu.setAttribute("aria-hidden", String(!open));
   }
 
-  function closeMenu() {
-    if (!navMenu) return;
-    navMenu.classList.remove("show-menu");
-    if (navToggle) navToggle.setAttribute("aria-expanded", "false");
-    if (navBackdrop) {
-      navBackdrop.classList.remove("is-open");
-      setTimeout(() => {
-        if (!navBackdrop.classList.contains("is-open")) navBackdrop.hidden = true;
-      }, 300);
-    }
+  if (navToggle) {
+    navToggle.addEventListener("click", () =>
+      setMenu(!body.classList.contains("menu-open"))
+    );
   }
 
-  if (navToggle) navToggle.addEventListener("click", openMenu);
-  if (navClose) navClose.addEventListener("click", closeMenu);
-  if (navBackdrop) navBackdrop.addEventListener("click", closeMenu);
-
-  document.querySelectorAll(".nav__link").forEach((link) => {
-    link.addEventListener("click", closeMenu);
-  });
+  document
+    .querySelectorAll(".menu a, .nav__talk")
+    .forEach((link) => link.addEventListener("click", () => setMenu(false)));
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
+    if (event.key === "Escape") setMenu(false);
   });
 
-  /*==================== DARK / LIGHT THEME ====================*/
-  const themeButton = document.getElementById("theme-button");
-  const themeIcon = themeButton ? themeButton.querySelector("i") : null;
-  const DARK_CLASS = "dark-theme";
-
-  function setTheme(isDark) {
-    document.body.classList.toggle(DARK_CLASS, isDark);
-    document.documentElement.classList.remove("theme-dark-preload");
-
-    if (themeIcon) {
-      themeIcon.classList.toggle("uil-sun", isDark);
-      themeIcon.classList.toggle("uil-moon", !isDark);
-    }
-    if (themeButton) {
-      themeButton.setAttribute("aria-pressed", String(isDark));
-      themeButton.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      );
-    }
-
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", isDark ? "#0a0c14" : "#7c3aed");
-  }
-
-  // Restore the stored choice, otherwise follow the OS preference.
-  let storedTheme = null;
-  try {
-    storedTheme = localStorage.getItem("selected-theme");
-  } catch (e) {
-    /* storage blocked (private mode) — fall through to the OS preference */
-  }
-
-  const prefersDark =
-    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  setTheme(storedTheme ? storedTheme === "dark" : prefersDark);
-
-  if (themeButton) {
-    themeButton.addEventListener("click", () => {
-      const isDark = !document.body.classList.contains(DARK_CLASS);
-      setTheme(isDark);
-      try {
-        localStorage.setItem("selected-theme", isDark ? "dark" : "light");
-      } catch (e) {
-        /* nothing to persist to — the toggle still works for this session */
-      }
-    });
-  }
-
-  /*==================== SCROLL: HEADER, SPY, TOP ====================*/
+  /*==================== SCROLL ====================*/
   const header = document.getElementById("header");
-  const scrollUp = document.getElementById("scroll-up");
-  const sections = document.querySelectorAll("main section[id]");
+  const heroName = document.getElementById("hero-name");
+  const wipe = document.getElementById("wipe");
+  const themedBlocks = document.querySelectorAll("[data-nav]");
 
   function onScroll() {
-    const scrollY = window.pageYOffset;
+    const vh = window.innerHeight;
 
-    if (header) header.classList.toggle("scroll-header", scrollY >= 40);
-    if (scrollUp) scrollUp.classList.toggle("show-scroll", scrollY >= 420);
-
-    // Scroll-spy: highlight the section currently under the header.
-    const offset = scrollY + (header ? header.offsetHeight : 0) + 80;
-    let currentId = null;
-
-    sections.forEach((section) => {
-      if (offset >= section.offsetTop) currentId = section.getAttribute("id");
-    });
-
-    // Near the bottom of the page the last section may never win on offset alone.
-    if (
-      scrollY + window.innerHeight >=
-      document.documentElement.scrollHeight - 4
-    ) {
-      const last = sections[sections.length - 1];
-      if (last) currentId = last.getAttribute("id");
+    // Blue shape sweeps over the statement as the wipe block scrolls by.
+    let wipeP = 0;
+    if (wipe) {
+      const r = wipe.getBoundingClientRect();
+      const travel = r.height - vh;
+      wipeP = Math.min(Math.max(-r.top / (travel * 0.85), 0), 1);
+      wipe.style.setProperty("--p", wipeP.toFixed(4));
     }
 
-    document.querySelectorAll(".nav__link").forEach((link) => {
-      const href = link.getAttribute("href") || "";
-      link.classList.toggle("active-link", href === "#" + currentId);
-    });
+    if (header) {
+      // Small logo appears once the big hero name has scrolled away.
+      if (heroName) {
+        header.classList.toggle(
+          "show-logo",
+          heroName.getBoundingClientRect().bottom < header.offsetHeight
+        );
+      }
+
+      // Match header colours to whatever sits beneath it.
+      const probe = header.offsetHeight / 2;
+      themedBlocks.forEach((block) => {
+        const r = block.getBoundingClientRect();
+        if (r.top <= probe && r.bottom > probe) {
+          let theme = block.dataset.nav;
+          if (block === wipe && wipeP > 0.55) theme = "blue";
+          header.dataset.theme = theme;
+        }
+      });
+    }
   }
 
   let ticking = false;
@@ -142,7 +139,22 @@
     },
     { passive: true }
   );
+  window.addEventListener("resize", onScroll);
   onScroll();
+
+  /*==================== COUNTERS ====================*/
+  function countUp(el) {
+    const target = Number(el.dataset.count) || 0;
+    if (reduceMotion) return;
+    const duration = 1400;
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      el.textContent = String(Math.round((1 - Math.pow(1 - t, 3)) * target));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
 
   /*==================== REVEAL ON SCROLL ====================*/
   const revealItems = document.querySelectorAll(".reveal");
@@ -155,17 +167,87 @@
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           entry.target.classList.add("is-visible");
+          entry.target.querySelectorAll("[data-count]").forEach(countUp);
           observer.unobserve(entry.target);
         });
       },
       { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
     );
 
-    revealItems.forEach((el, index) => {
-      // Stagger siblings slightly so grids cascade instead of popping at once.
-      el.style.transitionDelay = (index % 4) * 70 + "ms";
+    revealItems.forEach((el) => {
+      // Stagger siblings slightly so lists cascade instead of popping at once.
+      const siblings = Array.from(el.parentElement.children).filter((c) =>
+        c.classList.contains("reveal")
+      );
+      el.style.transitionDelay = (siblings.indexOf(el) % 4) * 80 + "ms";
       observer.observe(el);
     });
+  }
+
+  /*==================== PROJECTS CAROUSEL ====================*/
+  const orbit = document.getElementById("orbit");
+
+  if (orbit) {
+    const cards = Array.from(orbit.querySelectorAll(".orbit__card"));
+    const items = Array.from(orbit.querySelectorAll(".orbit__item"));
+    const currentEl = document.getElementById("orbit-current");
+    const totalEl = document.getElementById("orbit-total");
+    const n = cards.length;
+    const pad = (v) => String(v).padStart(2, "0");
+    let active = 0;
+
+    if (totalEl) totalEl.textContent = pad(n);
+
+    // Fan the cards out around the active one: neighbours shrink, lift,
+    // blur and fade the further they are from the centre.
+    function layout() {
+      cards.forEach((card, i) => {
+        let d = i - active;
+        if (d > n / 2) d -= n;
+        if (d < -n / 2) d += n;
+        const a = Math.abs(d);
+        card.style.setProperty("--tx", d * 58 + "%");
+        card.style.setProperty("--ty", -a * 9 + "%");
+        card.style.setProperty("--sc", String(Math.max(1 - a * 0.2, 0.4)));
+        card.style.setProperty("--bl", a === 0 ? "0px" : a * 2.5 + "px");
+        card.style.setProperty("--op", a > 2 ? "0" : String(1 - a * 0.28));
+        card.style.zIndex = String(10 - a);
+      });
+    }
+
+    function go(next) {
+      active = (next + n) % n;
+      items.forEach((item, i) => item.classList.toggle("is-active", i === active));
+      if (currentEl) currentEl.textContent = pad(active + 1);
+      layout();
+    }
+
+    const prev = document.getElementById("orbit-prev");
+    const nextBtn = document.getElementById("orbit-next");
+    if (prev) prev.addEventListener("click", () => go(active - 1));
+    if (nextBtn) nextBtn.addEventListener("click", () => go(active + 1));
+
+    // Clicking a side card brings it to the front.
+    cards.forEach((card, i) => card.addEventListener("click", () => go(i)));
+
+    orbit.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") go(active - 1);
+      if (event.key === "ArrowRight") go(active + 1);
+    });
+
+    // Swipe on touch screens.
+    let touchX = null;
+    orbit.addEventListener("touchstart", (e) => (touchX = e.touches[0].clientX), {
+      passive: true,
+    });
+    orbit.addEventListener("touchend", (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50) go(active + (dx < 0 ? 1 : -1));
+      touchX = null;
+    });
+
+    layout();
   }
 
   /*==================== FOOTER YEAR ====================*/

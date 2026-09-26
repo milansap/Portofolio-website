@@ -9,44 +9,42 @@ No build step: plain HTML, CSS and JavaScript, deployed as-is.
 | --- | --- |
 | `index.html` | All page content and section markup |
 | `assets/newcss.css` | Design tokens + every component style |
-| `assets/ptj.js` | Nav, theme toggle, scroll-spy, scroll-to-top, reveal-on-scroll |
+| `assets/ptj.js` | Intro loader, fit-to-width text, header theme, menu, services wipe, reveals, counters, projects carousel |
 | `assets/contact.js` | Contact form submission via EmailJS |
-| `assets/img/` | Portrait and project screenshots |
-| `assets/LatestMilanResume.pdf` | File served by the "Resume" / "Download CV" buttons |
+| `assets/img/` | Portraits (`hero-portrait.jpg` is the web-sized hero) and project screenshots |
+| `assets/Milan_Sapkota_Resume.pdf` | File served by the "Resume" / "Download CV" buttons |
 
-External dependencies are loaded from CDNs: Google Fonts (Inter, JetBrains Mono),
+External dependencies are loaded from CDNs: Google Fonts (Archivo variable, Mrs Saint Delafield for the intro signature),
 Unicons v4.0.8 for icons, and the EmailJS browser SDK.
 
 ## Theming
 
-Colours, spacing, radii, shadows and type sizes are CSS custom properties
-declared on `:root` in `assets/newcss.css`. Dark mode redeclares the same
-tokens under `body.dark-theme`, so restyling means editing tokens, not
-component rules.
+Base colours live on `:root` in `assets/newcss.css` (`--ink`, `--silver`,
+`--blue`). Each section opts into `.theme-light`, `.theme-blue` or
+`.theme-dark`, which set `--bg`, `--fg`, `--muted`, `--line` and `--accent`;
+components only read those. The `data-nav` attribute on a section tells the
+fixed header which colour scheme to use while that section is beneath it.
 
-The accent colour is `--accent` (plus `--accent-strong`, `--accent-soft`,
-`--accent-on`, `--accent-tint`, `--accent-tint-2` and `--accent-ring`).
-Change those and the whole site follows. There are no colour gradients —
-every accent surface is a flat fill.
-
-Theme selection order: the visitor's stored choice (`localStorage`), then the
-OS `prefers-color-scheme`. An inline script in `<head>` applies the dark
-background before first paint to avoid a white flash.
+Type is all Archivo: `.display` is heavy + extra-wide uppercase (via the
+`wdth` axis), the name is light weight, and `.fit` elements are sized by JS to
+span their container exactly.
 
 ## Editing content
 
-Sections live in `index.html` in page order: home, about, experience,
-projects, skills (education is nested at the end of the skills section),
-contact.
+Sections live in `index.html` in page order: hero, about, services intro
+(`#wipe`), services, experience, projects, skills + education, contact.
 
-- **Experience / education** entries are `.timeline__item` blocks.
-- **Projects** are `.project__card` blocks. A card either has an
-  `<img class="project__img">` plus a `.project__overlay` with links, or a
-  `.project__cover` placeholder (icon + label) when there is no public
-  screenshot or URL.
-- **Skills** are `.skills__card` groups of `.tag` spans.
+- **Services** are `.svc` items; each needs an increasing `--i` inline so the
+  sticky bars stack under one another.
+- **Experience** entries are `.job` rows.
+- **Projects**: add an `.orbit__card` (image or `.cover`) in `.orbit__stage`
+  and an `.orbit__item` in `.orbit__details`, in the same order. The counter
+  and carousel pick them up automatically.
+- **Skills** are `.skill-col` lists.
 
-Any element given `class="reveal"` fades in when scrolled into view.
+Any element given `class="reveal"` fades in when scrolled into view. The
+intro loader plays once per browser session and is skipped when the visitor
+prefers reduced motion.
 
 ## Running locally
 
@@ -65,8 +63,9 @@ Failures surface inline in `#formStatus` rather than as browser alerts.
 
 ## Notes
 
-- Images in `assets/img/` are unoptimised originals (~7 MB total; the hero
-  portrait alone is ~3.9 MB while it renders at 384 px wide). Resizing and
-  converting them to WebP is the single biggest available performance win.
-- `assets/LatestMilanResume.pdf` must be replaced by hand whenever the CV
-  changes — the filename is referenced in two places in `index.html`.
+- The hero uses `hero-portrait.jpg` (1100 px, ~165 KB). The project
+  screenshots are still unoptimised PNGs; converting them to WebP is the next
+  easy performance win. `DSC_7498.jpg` (~3.9 MB) is only used as the social
+  preview image.
+- `assets/Milan_Sapkota_Resume.pdf` must be replaced by hand whenever the CV
+  changes — the filename is referenced from the header pill and the menu in `index.html`.
